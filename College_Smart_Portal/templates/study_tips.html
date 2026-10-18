@@ -1,0 +1,481 @@
+{% extends "base.html" %}
+{% block title %}AI Study Tips | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<div class="study-page">
+
+    <!-- Hero Section -->
+    <section class="study-hero mb-4">
+        <div class="study-hero-content">
+            <span class="hero-badge">
+                <i class="bi bi-stars"></i> AI Learning Assistant
+            </span>
+
+            <h1>AI Study Tips 🤖</h1>
+
+            <p>
+                Enter any subject or topic and receive smart revision tips,
+                study plans, important concepts and quick guidance powered by AI.
+            </p>
+
+            <a href="#study-form" class="btn btn-light hero-btn">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Start Learning
+            </a>
+        </div>
+
+        <div class="hero-decoration">
+            <i class="bi bi-robot"></i>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="study-feature-card">
+                <div class="feature-icon purple">
+                    <i class="bi bi-lightbulb-fill"></i>
+                </div>
+                <h5>Smart Revision</h5>
+                <p>Get easy revision strategies for difficult topics.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="study-feature-card">
+                <div class="feature-icon blue">
+                    <i class="bi bi-clock-fill"></i>
+                </div>
+                <h5>Quick Learning</h5>
+                <p>Understand concepts faster with structured guidance.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="study-feature-card">
+                <div class="feature-icon orange">
+                    <i class="bi bi-journal-check"></i>
+                </div>
+                <h5>Exam Focus</h5>
+                <p>Practice important points before examinations.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AI Form -->
+    <div id="study-form" class="study-card mb-4">
+
+        <div class="section-header">
+            <div>
+                <span class="section-label">AI STUDY ASSISTANT</span>
+                <h2><i class="bi bi-mortarboard-fill"></i> Generate Study Tips</h2>
+                <p>Ask AI for revision guidance on any subject.</p>
+            </div>
+        </div>
+
+        <form method="post" id="aiForm">
+
+            <label class="form-label fw-semibold">
+                📖 Subject or Topic
+            </label>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+
+                <input id="topic"
+                       class="form-control"
+                       name="topic"
+                       value="{{ topic }}"
+                       placeholder="e.g. TCP Header Format, Python, Software Engineering"
+                       required
+                       maxlength="200">
+            </div>
+
+            <!-- Quick Topics -->
+            <div class="mb-3">
+                <small class="text-muted d-block mb-2">
+                    Popular topics:
+                </small>
+
+                <button type="button" class="btn btn-sm btn-outline-primary topic-btn">Python</button>
+                <button type="button" class="btn btn-sm btn-outline-primary topic-btn">TCP Header</button>
+                <button type="button" class="btn btn-sm btn-outline-primary topic-btn">Software Engineering</button>
+                <button type="button" class="btn btn-sm btn-outline-primary topic-btn">DBMS</button>
+                <button type="button" class="btn btn-sm btn-outline-primary topic-btn">Networking</button>
+            </div>
+
+            <button class="btn btn-primary generate-btn" type="submit">
+                <i class="bi bi-stars"></i>
+                Generate Study Tips
+            </button>
+
+        </form>
+
+        <!-- Loading -->
+        <div id="loadingBox" class="loading-box mt-4" style="display:none;">
+            <div class="spinner-border text-primary"></div>
+            <p class="mt-3 mb-0">
+                AI is preparing your study guidance...
+            </p>
+        </div>
+
+    </div>
+
+    <!-- AI Answer -->
+    {% if answer %}
+    <div class="study-card mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="answer-icon">
+                <i class="bi bi-robot"></i>
+            </div>
+
+            <div>
+                <h3 class="mb-0">Your AI Study Guidance</h3>
+                <small class="text-muted">Personalized revision support</small>
+            </div>
+        </div>
+
+        <div class="ai-answer">{{ answer }}</div>
+
+    </div>
+    {% endif %}
+
+    <!-- Study Techniques -->
+    <div class="study-card mb-4">
+
+        <div class="section-header">
+            <div>
+                <span class="section-label">SMART LEARNING</span>
+                <h2><i class="bi bi-lightbulb-fill"></i> Effective Study Method</h2>
+                <p>Follow these techniques for better learning.</p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">01</span>
+                    <h5>📚 Divide the Topic</h5>
+                    <p>Break large chapters into small manageable sections.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">02</span>
+                    <h5>🧠 Understand Concepts</h5>
+                    <p>Focus on definitions, formulas and important ideas.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">03</span>
+                    <h5>📝 Make Notes</h5>
+                    <p>Create short notes with labelled diagrams.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">04</span>
+                    <h5>📖 Practice Questions</h5>
+                    <p>Solve previous exam questions regularly.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">05</span>
+                    <h5>🔄 Revise Again</h5>
+                    <p>Repeat revision before examinations.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="method-card">
+                    <span class="method-number">06</span>
+                    <h5>🎯 Test Yourself</h5>
+                    <p>Check your understanding without looking at notes.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Benefits -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="benefit-card">
+                <i class="bi bi-graph-up-arrow"></i>
+                <h5>Better Revision</h5>
+                <p>Revise smarter with AI guidance.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="benefit-card">
+                <i class="bi bi-stopwatch-fill"></i>
+                <h5>Save Time</h5>
+                <p>Understand difficult topics quickly.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="benefit-card">
+                <i class="bi bi-award-fill"></i>
+                <h5>Exam Confidence</h5>
+                <p>Improve preparation with focused study.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="alert alert-info rounded-4">
+        <h6 class="fw-bold">
+            <i class="bi bi-info-circle-fill"></i>
+            Study Support Notice
+        </h6>
+
+        AI study tips are designed to support learning and revision.
+        Always verify technical facts with your textbook,
+        syllabus and faculty guidance.
+    </div>
+
+</div>
+
+<style>
+
+.study-page{
+    --primary:#5b4bdb;
+    --dark:#20294b;
+    --muted:#748096;
+}
+
+.study-hero{
+    position:relative;
+    overflow:hidden;
+    padding:42px;
+    border-radius:24px;
+    color:white;
+    background:linear-gradient(120deg,#2d2482,#5b4bdb,#8b79ff);
+}
+
+.study-hero-content{
+    position:relative;
+    z-index:2;
+    max-width:620px;
+}
+
+.hero-badge{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:30px;
+    background:rgba(255,255,255,.15);
+    margin-bottom:18px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.study-hero h1{
+    font-size:42px;
+    font-weight:800;
+}
+
+.study-hero p{
+    color:#eceaff;
+    line-height:1.8;
+}
+
+.hero-btn{
+    margin-top:14px;
+    color:#4d3fc9;
+    font-weight:700;
+}
+
+.hero-decoration{
+    position:absolute;
+    right:8%;
+    top:18%;
+    font-size:140px;
+    color:rgba(255,255,255,.12);
+}
+
+.study-card{
+    background:white;
+    border-radius:20px;
+    padding:28px;
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+    border:1px solid #eef1f7;
+}
+
+.section-label{
+    font-size:11px;
+    color:#6d5ce7;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.section-header h2{
+    font-size:28px;
+    font-weight:800;
+    color:var(--dark);
+}
+
+.section-header p{
+    color:var(--muted);
+}
+
+.study-feature-card,
+.benefit-card{
+    background:white;
+    border-radius:18px;
+    padding:24px;
+    text-align:center;
+    border:1px solid #edf0f7;
+    box-shadow:0 5px 18px rgba(0,0,0,.04);
+    transition:.25s;
+}
+
+.study-feature-card:hover,
+.benefit-card:hover,
+.method-card:hover{
+    transform:translateY(-4px);
+}
+
+.feature-icon{
+    width:52px;
+    height:52px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    margin:auto auto 16px;
+}
+
+.purple{background:#efeaff;color:#5b4bdb;}
+.blue{background:#e7f3ff;color:#2675c7;}
+.orange{background:#fff2e4;color:#d77a1d;}
+
+.generate-btn{
+    border-radius:12px;
+    padding:12px 20px;
+    font-weight:700;
+}
+
+.loading-box{
+    text-align:center;
+}
+
+.answer-icon{
+    width:50px;
+    height:50px;
+    background:#efeaff;
+    color:#5b4bdb;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.ai-answer{
+    white-space:pre-wrap;
+    line-height:1.9;
+    background:#faf9ff;
+    border-left:4px solid #6d5ce7;
+    padding:18px;
+    border-radius:12px;
+}
+
+.method-card{
+    border:1px solid #edf0f7;
+    border-radius:16px;
+    padding:18px;
+    height:100%;
+    transition:.25s;
+}
+
+.method-number{
+    display:inline-flex;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:#efeaff;
+    color:#5b4bdb;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.benefit-card i{
+    font-size:32px;
+    color:#5b4bdb;
+    margin-bottom:12px;
+}
+
+.topic-btn{
+    margin:4px;
+    border-radius:20px;
+}
+
+@media(max-width:768px){
+
+.study-hero{
+    padding:28px;
+}
+
+.study-hero h1{
+    font-size:30px;
+}
+
+.hero-decoration{
+    font-size:90px;
+    right:-2%;
+}
+
+.study-card{
+    padding:22px;
+}
+
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const topicInput=document.getElementById("topic");
+const topicButtons=document.querySelectorAll(".topic-btn");
+const form=document.getElementById("aiForm");
+const loading=document.getElementById("loadingBox");
+
+topicButtons.forEach(btn=>{
+btn.addEventListener("click",()=>{
+topicInput.value=btn.innerText;
+topicInput.focus();
+});
+});
+
+form.addEventListener("submit",()=>{
+loading.style.display="block";
+});
+
+});
+
+</script>
+
+{% endblock %}

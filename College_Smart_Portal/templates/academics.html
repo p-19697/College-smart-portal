@@ -1,0 +1,810 @@
+
+{% extends "base.html" %}
+
+{% block title %}Academics | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<div class="academics-page">
+
+    <!-- Hero Section -->
+    <section class="academic-hero mb-4">
+        <div class="hero-content">
+            <span class="hero-badge">
+                <i class="bi bi-mortarboard-fill"></i>
+                Learning & Education
+            </span>
+
+            <h1>Academic <span>Hub</span> 🎓</h1>
+
+            <p>
+                Explore subjects, discover your academic path,
+                and stay organized throughout your learning journey.
+            </p>
+
+            <a href="#subject-list" class="btn btn-light hero-btn">
+                <i class="bi bi-book-half"></i> Explore Subjects
+            </a>
+        </div>
+
+        <div class="hero-decoration">
+            <i class="bi bi-journal-bookmark-fill"></i>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-6 col-lg-4">
+            <div class="academic-stat">
+                <div class="stat-icon purple">
+                    <i class="bi bi-journal-text"></i>
+                </div>
+                <div>
+                    <h3 id="totalSubjects">{{ subjects|length }}</h3>
+                    <p>Total Subjects</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <div class="academic-stat">
+                <div class="stat-icon blue">
+                    <i class="bi bi-building"></i>
+                </div>
+                <div>
+                    <h3 id="totalDepartments">0</h3>
+                    <p>Departments</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="academic-stat">
+                <div class="stat-icon orange">
+                    <i class="bi bi-funnel-fill"></i>
+                </div>
+                <div>
+                    <h3 id="visibleSubjects">{{ subjects|length }}</h3>
+                    <p>Subjects Displayed</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Subject List -->
+    <section class="academic-card" id="subject-list">
+
+        <div class="section-heading">
+            <div>
+                <span class="section-label">YOUR LEARNING SPACE</span>
+                <h2><i class="bi bi-book-half"></i> Subject Directory</h2>
+                <p>Search and filter the available subject information.</p>
+            </div>
+
+            <span class="directory-icon">
+                <i class="bi bi-mortarboard"></i>
+            </span>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="filter-panel">
+            <div class="row g-3">
+
+                <div class="col-12 col-lg-4">
+                    <label for="subjectSearch" class="form-label">
+                        🔎 Search Subjects
+                    </label>
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input
+                            type="text"
+                            id="subjectSearch"
+                            class="form-control"
+                            placeholder="Search code, name, department..."
+                        >
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label for="departmentFilter" class="form-label">
+                        🏢 Filter by Department
+                    </label>
+                    <select id="departmentFilter" class="form-select">
+                        <option value="">All Departments</option>
+                        {% for d in subjects|map(attribute='department')|unique|sort %}
+                        <option value="{{ d }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label for="semesterFilter" class="form-label">
+                        📚 Filter by Semester
+                    </label>
+                    <select id="semesterFilter" class="form-select">
+                        <option value="">All Semesters</option>
+                        {% for sem in subjects|map(attribute='semester')|unique|sort %}
+                        <option value="{{ sem }}">{{ sem }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="filter-footer">
+                <span id="resultCount" class="result-count">
+                    Showing {{ subjects|length }} subjects
+                </span>
+
+                <button type="button" id="resetFilters"
+                        class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Subjects Table -->
+        <div class="table-responsive">
+            <table class="table academic-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="subjectTableBody">
+
+                    {% for s in subjects %}
+                    <tr class="subject-row"
+                        data-code="{{ s.subject_code|lower }}"
+                        data-name="{{ s.subject_name|lower }}"
+                        data-department="{{ s.department|lower }}"
+                        data-semester="{{ s.semester|string|lower }}">
+
+                        <td>
+                            <span class="subject-code">
+                                <i class="bi bi-hash"></i>
+                                {{ s.subject_code }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="subject-name">
+                                <span class="subject-icon">
+                                    <i class="bi bi-journal-bookmark-fill"></i>
+                                </span>
+                                <strong>{{ s.subject_name }}</strong>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="department-badge">
+                                <i class="bi bi-building"></i>
+                                {{ s.department }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="semester-badge">
+                                <i class="bi bi-calendar3"></i>
+                                {{ s.semester }}
+                            </span>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="available-badge">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Available
+                            </span>
+                        </td>
+
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="bi bi-journal-x"></i>
+                            <h5>No Subjects Available</h5>
+                            <p>Subject information will appear here when available.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr id="noFilterResults" style="display:none;">
+                        <td colspan="5" class="empty-state">
+                            <i class="bi bi-search"></i>
+                            <h5>No Matching Subjects</h5>
+                            <p>Try another keyword or reset the filters.</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-note">
+            <i class="bi bi-info-circle-fill"></i>
+            Subject details displayed here depend on the data stored in the portal.
+            Verify official subject and semester details with the college syllabus.
+        </div>
+
+    </section>
+
+    <!-- Academic Tips -->
+    <section class="mt-4">
+        <div class="section-heading tips-heading">
+            <div>
+                <span class="section-label">STUDY SMARTER</span>
+                <h2>Build Better Study Habits ✨</h2>
+                <p>Simple habits to help you stay focused and organized.</p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tip-card">
+                    <div class="tip-icon tip-purple">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h5>📅 Plan Your Study</h5>
+                    <p>Create a weekly timetable and divide topics into manageable tasks.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tip-card">
+                    <div class="tip-icon tip-blue">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <h5>📝 Make Notes</h5>
+                    <p>Write short notes and revise important concepts regularly.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tip-card">
+                    <div class="tip-icon tip-orange">
+                        <i class="bi bi-pc-display"></i>
+                    </div>
+                    <h5>💻 Practise Skills</h5>
+                    <p>Apply what you learn through practicals, projects and exercises.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tip-card">
+                    <div class="tip-icon tip-green">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h5>🤝 Learn Together</h5>
+                    <p>Discuss difficult topics with classmates and ask teachers for help.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<!-- Styles -->
+<style>
+.academics-page {
+    --academic-primary: #5b4bdb;
+    --academic-dark: #20294b;
+    --academic-muted: #718096;
+    padding-bottom: 30px;
+}
+
+.academic-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 42px;
+    border-radius: 24px;
+    color: white;
+    background: linear-gradient(120deg, #4936c9, #7766ed 65%, #9d8af7);
+    box-shadow: 0 12px 35px rgba(91, 75, 219, .19);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 13px;
+    margin-bottom: 17px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 30px;
+    background: rgba(255,255,255,.13);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.academic-hero h1 {
+    font-size: clamp(30px, 4vw, 43px);
+    font-weight: 800;
+    margin-bottom: 13px;
+}
+
+.academic-hero h1 span {
+    color: #ffe29a;
+}
+
+.academic-hero p {
+    max-width: 540px;
+    line-height: 1.8;
+    color: #f0edff;
+}
+
+.hero-btn {
+    margin-top: 12px;
+    padding: 11px 19px;
+    border-radius: 10px;
+    color: #4d3ac8;
+    font-weight: 700;
+    transition: .25s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    background: #f3f0ff;
+    color: #3928a9;
+}
+
+.hero-decoration {
+    position: absolute;
+    right: 6%;
+    top: 15%;
+    color: rgba(255,255,255,.13);
+    font-size: clamp(100px, 18vw, 205px);
+    transform: rotate(-12deg);
+}
+
+.academic-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    padding: 20px;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(35, 45, 90, .045);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.academic-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(35, 45, 90, .09);
+}
+
+.stat-icon {
+    display: grid;
+    place-items: center;
+    width: 51px;
+    height: 51px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    font-size: 22px;
+}
+
+.purple, .tip-purple { background: #efebff; color: #6651db; }
+.blue, .tip-blue { background: #e5f2ff; color: #2675c7; }
+.orange, .tip-orange { background: #fff0df; color: #d77a1d; }
+.green, .tip-green { background: #e0f8ec; color: #219765; }
+
+.academic-stat h3 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--academic-dark);
+}
+
+.academic-stat p {
+    margin: 4px 0 0;
+    color: var(--academic-muted);
+    font-size: 13px;
+}
+
+.academic-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 20px;
+    box-shadow: 0 7px 28px rgba(35, 45, 90, .05);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 25px 27px;
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #7263d9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+    margin: 0 0 8px;
+    color: var(--academic-dark);
+    font-size: clamp(21px, 3vw, 27px);
+    font-weight: 800;
+}
+
+.section-heading h2 i {
+    color: var(--academic-primary);
+}
+
+.section-heading p {
+    margin: 0;
+    color: var(--academic-muted);
+    font-size: 14px;
+}
+
+.directory-icon {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    border-radius: 17px;
+    background: #f0edff;
+    color: var(--academic-primary);
+    font-size: 27px;
+}
+
+.filter-panel {
+    padding: 22px 27px;
+    background: #f8f9ff;
+    border-top: 1px solid #edf0f7;
+    border-bottom: 1px solid #edf0f7;
+}
+
+.filter-panel .form-label {
+    color: #36415d;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.filter-panel .form-control,
+.filter-panel .form-select {
+    min-height: 45px;
+    border: 1px solid #e0e4f0;
+    border-radius: 10px;
+    font-size: 13px;
+    box-shadow: none;
+}
+
+.filter-panel .form-control:focus,
+.filter-panel .form-select:focus {
+    border-color: #8d80ee;
+    box-shadow: 0 0 0 3px rgba(91,75,219,.1);
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box > i {
+    position: absolute;
+    left: 13px;
+    top: 14px;
+    color: #858ba1;
+}
+
+.search-box input {
+    padding-left: 38px;
+}
+
+.filter-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.result-count {
+    color: #6d7690;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.filter-footer .btn {
+    border-radius: 8px;
+}
+
+.academic-table thead th {
+    padding: 16px 18px;
+    background: #272f51;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    border: none;
+}
+
+.academic-table tbody td {
+    padding: 16px 18px;
+    color: #4c5670;
+    font-size: 13px;
+    border-color: #f0f1f7;
+}
+
+.academic-table tbody tr {
+    transition: background .2s;
+}
+
+.academic-table tbody tr:hover {
+    background: #f8f7ff;
+}
+
+.subject-code {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #f0edff;
+    color: #5b4bdb;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.subject-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 170px;
+    color: #303954;
+}
+
+.subject-icon {
+    display: grid;
+    place-items: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #edf5ff;
+    color: #367dc4;
+}
+
+.department-badge,
+.semester-badge,
+.available-badge {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.department-badge {
+    background: #eaf4ff;
+    color: #2867a8;
+}
+
+.semester-badge {
+    background: #fff2e4;
+    color: #ad681d;
+}
+
+.available-badge {
+    background: #e5f8ed;
+    color: #218553;
+}
+
+.empty-state {
+    padding: 45px 15px !important;
+    text-align: center;
+    color: #7a839b !important;
+}
+
+.empty-state > i {
+    display: block;
+    margin-bottom: 12px;
+    color: #9b91e9;
+    font-size: 35px;
+}
+
+.empty-state h5 {
+    color: #303954;
+    font-weight: 700;
+}
+
+.empty-state p {
+    margin-bottom: 0;
+}
+
+.table-note {
+    padding: 14px 20px;
+    background: #fafaff;
+    color: #737d95;
+    font-size: 12px;
+    line-height: 1.7;
+    border-top: 1px solid #edf0f7;
+}
+
+.table-note i {
+    margin-right: 5px;
+    color: #7060d8;
+}
+
+.tips-heading {
+    padding: 24px 3px 18px;
+}
+
+.tip-card {
+    height: 100%;
+    padding: 22px;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(35, 45, 90, .04);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 27px rgba(35, 45, 90, .09);
+}
+
+.tip-icon {
+    display: grid;
+    place-items: center;
+    width: 47px;
+    height: 47px;
+    margin-bottom: 17px;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.tip-card h5 {
+    margin-bottom: 10px;
+    color: #303954;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.tip-card p {
+    margin: 0;
+    color: #737d95;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+@media (max-width: 576px) {
+    .academic-hero {
+        padding: 27px 22px;
+        border-radius: 18px;
+    }
+
+    .hero-decoration {
+        right: -8%;
+        top: 35%;
+        font-size: 115px;
+    }
+
+    .section-heading {
+        padding: 22px 18px;
+    }
+
+    .filter-panel {
+        padding: 20px 18px;
+    }
+
+    .academic-table thead th,
+    .academic-table tbody td {
+        padding: 13px;
+    }
+
+    .academic-stat {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .stat-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 19px;
+    }
+
+    .academic-stat h3 {
+        font-size: 21px;
+    }
+}
+</style>
+
+<!-- Search and Filter JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("subjectSearch");
+    const departmentFilter = document.getElementById("departmentFilter");
+    const semesterFilter = document.getElementById("semesterFilter");
+    const resetButton = document.getElementById("resetFilters");
+    const rows = Array.from(document.querySelectorAll(".subject-row"));
+    const noResults = document.getElementById("noFilterResults");
+    const resultCount = document.getElementById("resultCount");
+    const visibleSubjects = document.getElementById("visibleSubjects");
+    const totalDepartments = document.getElementById("totalDepartments");
+
+    const departments = new Set(
+        rows.map(row => row.dataset.department).filter(Boolean)
+    );
+
+    totalDepartments.textContent = departments.size;
+
+    function filterSubjects() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        const selectedDepartment = departmentFilter.value.toLowerCase();
+        const selectedSemester = semesterFilter.value.toLowerCase();
+        let visibleCount = 0;
+
+        rows.forEach(function (row) {
+            const searchableText = [
+                row.dataset.code,
+                row.dataset.name,
+                row.dataset.department,
+                row.dataset.semester
+            ].join(" ");
+
+            const matchesSearch = searchableText.includes(searchTerm);
+            const matchesDepartment =
+                !selectedDepartment ||
+                row.dataset.department === selectedDepartment;
+            const matchesSemester =
+                !selectedSemester ||
+                row.dataset.semester === selectedSemester;
+
+            const show = matchesSearch &&
+                         matchesDepartment &&
+                         matchesSemester;
+
+            row.style.display = show ? "" : "none";
+
+            if (show) {
+                visibleCount++;
+            }
+        });
+
+        noResults.style.display =
+            rows.length > 0 && visibleCount === 0 ? "" : "none";
+
+        resultCount.textContent =
+            `Showing ${visibleCount} of ${rows.length} subjects`;
+
+        visibleSubjects.textContent = visibleCount;
+    }
+
+    searchInput.addEventListener("input", filterSubjects);
+    departmentFilter.addEventListener("change", filterSubjects);
+    semesterFilter.addEventListener("change", filterSubjects);
+
+    resetButton.addEventListener("click", function () {
+        searchInput.value = "";
+        departmentFilter.value = "";
+        semesterFilter.value = "";
+        filterSubjects();
+    });
+
+    filterSubjects();
+});
+</script>
+
+{% endblock %}

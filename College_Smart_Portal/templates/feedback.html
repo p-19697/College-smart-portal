@@ -1,0 +1,695 @@
+
+{% extends "base.html" %}
+
+{% block title %}Feedback | College Smart Portal{% endblock %}
+
+{% block head %}
+<style>
+.feedback-page {
+    --fb-primary: #4f46e5;
+    --fb-dark: #20294b;
+    --fb-muted: #718096;
+    color: #26324b;
+    padding-bottom: 30px;
+}
+
+.feedback-page .fb-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 38px;
+    border-radius: 23px;
+    color: #fff;
+    background: linear-gradient(125deg, #312e81, #4f46e5 60%, #818cf8);
+    box-shadow: 0 12px 30px rgba(79, 70, 229, .16);
+}
+
+.feedback-page .fb-hero h1 {
+    font-size: clamp(29px, 4vw, 40px);
+    font-weight: 800;
+    margin: 12px 0;
+}
+
+.feedback-page .fb-hero p {
+    max-width: 600px;
+    color: #e8eaff;
+    line-height: 1.8;
+}
+
+.feedback-page .fb-hero-icon {
+    position: absolute;
+    right: 7%;
+    top: 12%;
+    font-size: 115px;
+    opacity: .16;
+    transform: rotate(-10deg);
+}
+
+.feedback-page .hero-label {
+    display: inline-block;
+    padding: 7px 13px;
+    border: 1px solid rgba(255,255,255,.3);
+    background: rgba(255,255,255,.12);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .7px;
+}
+
+.feedback-page .fb-card {
+    background: #fff;
+    border: 1px solid #e9edf5;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, .045);
+}
+
+.feedback-page .fb-section-title {
+    color: var(--fb-dark);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.feedback-page .fb-muted {
+    color: var(--fb-muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.feedback-page .fb-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    font-size: 23px;
+    color: var(--fb-primary);
+    background: #eeedff;
+    flex-shrink: 0;
+}
+
+.feedback-page .form-label {
+    color: #34415a;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.feedback-page .form-control,
+.feedback-page .form-select {
+    border: 1px solid #dce3ef;
+    border-radius: 11px;
+    padding: 11px 13px;
+    font-size: 14px;
+}
+
+.feedback-page .form-control:focus,
+.feedback-page .form-select:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 .2rem rgba(79, 70, 229, .1);
+}
+
+.feedback-page textarea.form-control {
+    min-height: 125px;
+    resize: vertical;
+}
+
+.feedback-page .submit-btn {
+    padding: 12px 18px;
+    border-radius: 11px;
+    font-weight: 700;
+    background: var(--fb-primary);
+    border: none;
+    transition: .2s;
+}
+
+.feedback-page .submit-btn:hover {
+    background: #3730a3;
+    transform: translateY(-1px);
+}
+
+.feedback-page .rating-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.feedback-page .rating-option {
+    cursor: pointer;
+    flex: 1;
+    min-width: 52px;
+}
+
+.feedback-page .rating-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.feedback-page .rating-option span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid #e0e5ef;
+    border-radius: 10px;
+    padding: 10px 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.feedback-page .rating-option input:checked + span {
+    background: #fff8e6;
+    border-color: #f4bd4f;
+    color: #9a6500;
+    box-shadow: 0 0 0 2px rgba(245, 183, 55, .12);
+}
+
+.feedback-page .rating-option:focus-within span {
+    outline: 2px solid #818cf8;
+}
+
+.feedback-page .rating-option span:hover {
+    border-color: #f4bd4f;
+}
+
+.feedback-page .rating-stars {
+    color: #f4b740;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.feedback-page .review-card {
+    padding: 19px;
+    border: 1px solid #e9edf5;
+    border-radius: 16px;
+    background: #fff;
+    margin-bottom: 13px;
+    transition: .2s;
+}
+
+.feedback-page .review-card:hover {
+    border-color: #c9c7ff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
+    transform: translateY(-2px);
+}
+
+.feedback-page .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: #eeedff;
+    color: #4f46e5;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+.feedback-page .rating-badge {
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: #fff6df;
+    color: #926200;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.feedback-page .review-message {
+    color: #4b5870;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.feedback-page .review-date {
+    font-size: 11px;
+    color: #8792a5;
+}
+
+.feedback-page .filter-panel {
+    padding: 14px;
+    border-radius: 13px;
+    background: #f8f9ff;
+    border: 1px solid #eceeff;
+}
+
+.feedback-page .empty-state {
+    text-align: center;
+    padding: 36px 18px;
+    border: 1px dashed #d5d9e8;
+    border-radius: 16px;
+    background: #fafbff;
+}
+
+.feedback-page .empty-icon {
+    font-size: 43px;
+    margin-bottom: 10px;
+}
+
+.feedback-page .benefit-box {
+    padding: 19px;
+    border-radius: 15px;
+    background: linear-gradient(120deg, #f0f4ff, #f8f6ff);
+    border: 1px solid #e2e6ff;
+}
+
+.feedback-page .benefit-box h6 {
+    font-weight: 800;
+}
+
+.feedback-page .privacy-note {
+    padding: 14px;
+    border-radius: 12px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    color: #166534;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.feedback-page .filter-count {
+    font-size: 12px;
+    color: var(--fb-muted);
+}
+
+@media(max-width:767px) {
+    .feedback-page .fb-hero {
+        padding: 27px 22px;
+    }
+
+    .feedback-page .fb-hero-icon {
+        font-size: 70px;
+        right: 3%;
+        top: 5%;
+    }
+
+    .feedback-page .fb-card {
+        padding: 19px;
+    }
+
+    .feedback-page .fb-section-title {
+        font-size: 21px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="feedback-page">
+
+    <!-- HERO -->
+    <section class="fb-hero mb-4">
+        <div class="fb-hero-icon">
+            <i class="bi bi-chat-heart-fill"></i>
+        </div>
+
+        <div class="position-relative" style="z-index:1;">
+            <span class="hero-label">
+                <i class="bi bi-stars"></i> STUDENT VOICE MATTERS
+            </span>
+
+            <h1>We Value Your Feedback 💜</h1>
+
+            <p class="mb-0">
+                Your ideas and suggestions help us improve the College Smart
+                Portal and create a better experience for every student.
+            </p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="row g-4">
+
+        <!-- FEEDBACK FORM -->
+        <div class="col-lg-5">
+            <div class="fb-card">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="fb-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <div>
+                        <h2 class="fb-section-title mb-1">Share Feedback</h2>
+                        <p class="fb-muted mb-0">Tell us about your experience.</p>
+                    </div>
+                </div>
+
+                <form method="post" id="feedbackForm">
+
+                    <div class="mb-3">
+                        <label for="studentName" class="form-label">
+                            <i class="bi bi-person me-1"></i>
+                            Your Name <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="text"
+                               id="studentName"
+                               class="form-control"
+                               name="student_name"
+                               placeholder="Enter your full name"
+                               maxlength="100"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label d-block">
+                            <i class="bi bi-star me-1"></i>
+                            How would you rate the portal?
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <div class="rating-options">
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="1" required>
+                                <span>⭐ 1</span>
+                            </label>
+
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="2">
+                                <span>⭐ 2</span>
+                            </label>
+
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="3">
+                                <span>⭐ 3</span>
+                            </label>
+
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="4">
+                                <span>⭐ 4</span>
+                            </label>
+
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="5">
+                                <span>⭐ 5</span>
+                            </label>
+                        </div>
+
+                        <small id="ratingHint" class="text-muted d-block mt-2">
+                            Select a rating from 1 to 5.
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="feedbackMessage" class="form-label">
+                            <i class="bi bi-chat-left-text me-1"></i>
+                            Your Message <span class="text-danger">*</span>
+                        </label>
+
+                        <textarea id="feedbackMessage"
+                                  class="form-control"
+                                  name="message"
+                                  rows="5"
+                                  maxlength="2000"
+                                  placeholder="Share your experience, ideas or suggestions..."
+                                  required></textarea>
+
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-muted">Be clear and constructive.</small>
+                            <small id="charCount" class="text-muted">0 / 2000</small>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary submit-btn w-100"
+                            type="submit" id="submitFeedback">
+                        <i class="bi bi-send-fill me-2"></i>
+                        Submit Feedback
+                    </button>
+
+                </form>
+
+                <div class="privacy-note mt-3">
+                    <i class="bi bi-shield-check me-1"></i>
+                    <strong>Before submitting:</strong> Your name and message
+                    may be visible in the recent feedback section. Avoid
+                    including passwords or other sensitive personal information.
+                </div>
+
+            </div>
+
+            <!-- BENEFIT BOX -->
+            <div class="benefit-box mt-4">
+                <h6><i class="bi bi-lightbulb-fill me-2"></i>Why Your Feedback Matters</h6>
+                <p class="fb-muted mb-0">
+                    Student suggestions help identify problems, improve
+                    portal usability and make college information easier to access.
+                </p>
+            </div>
+        </div>
+
+        <!-- RECENT FEEDBACK -->
+        <div class="col-lg-7">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+                <div>
+                    <h2 class="fb-section-title mb-1">
+                        <i class="bi bi-chat-square-quote me-1"></i>
+                        Recent Feedback
+                    </h2>
+                    <p class="fb-muted mb-0">
+                        Browse the latest submitted responses.
+                    </p>
+                </div>
+
+                <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                    <i class="bi bi-clock-history me-1"></i> Latest Responses
+                </span>
+            </div>
+
+            <!-- SEARCH AND FILTERS -->
+            <div class="filter-panel mb-3">
+                <div class="row g-2">
+                    <div class="col-md-7">
+                        <label for="feedbackSearch" class="form-label">
+                            🔎 Search feedback
+                        </label>
+                        <input type="search"
+                               id="feedbackSearch"
+                               class="form-control"
+                               placeholder="Search by name or message...">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label for="ratingFilter" class="form-label">
+                            ⭐ Filter by rating
+                        </label>
+                        <select id="ratingFilter" class="form-select">
+                            <option value="all">All Ratings</option>
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="3">3 - Good</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="1">1 - Needs Improvement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="filter-count" id="feedbackCount">
+                        Showing recent feedback
+                    </span>
+
+                    <button type="button" id="clearFilters"
+                            class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- FEEDBACK CARDS -->
+            <div id="feedbackList">
+                {% for f in feedbacks %}
+                <article class="review-card"
+                         data-name="{{ f.student_name|e|lower }}"
+                         data-message="{{ f.message|e|lower }}"
+                         data-rating="{{ f.rating }}">
+
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar">
+                                {{ f.student_name[0]|upper if f.student_name else '?' }}
+                            </div>
+
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    {{ f.student_name }}
+                                </h6>
+                                <div class="rating-stars"
+                                     aria-label="{{ f.rating }} out of 5 stars">
+                                    {% for star in range(1, 6) %}
+                                        {% if star <= f.rating|int %}
+                                            ★
+                                        {% else %}
+                                            <span style="color:#dce1eb;">★</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="rating-badge">
+                            <i class="bi bi-star-fill"></i>
+                            {{ f.rating }}/5
+                        </span>
+
+                    </div>
+
+                    <p class="review-message mt-3 mb-2">{{ f.message }}</p>
+
+                    <div class="review-date">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        {{ f.created_at or 'Date not available' }}
+                    </div>
+
+                </article>
+                {% else %}
+                <div class="empty-state" id="noFeedback">
+                    <div class="empty-icon">💬</div>
+                    <h5 class="fw-bold">No Feedback Yet</h5>
+                    <p class="fb-muted mb-0">
+                        Be the first to share your experience with the portal!
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="empty-state mt-3" id="noMatches" style="display:none;">
+                <div class="empty-icon">🔍</div>
+                <h5 class="fw-bold">No Matching Feedback</h5>
+                <p class="fb-muted mb-3">
+                    Try another name, keyword or rating.
+                </p>
+                <button type="button" class="btn btn-outline-primary"
+                        id="resetSearch">
+                    Reset Search
+                </button>
+            </div>
+
+            <p class="text-muted small mt-3">
+                <i class="bi bi-info-circle me-1"></i>
+                Feedback shown here depends on the records returned by the server.
+            </p>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Character counter
+    const messageInput = document.getElementById("feedbackMessage");
+    const charCount = document.getElementById("charCount");
+
+    function updateCharCount() {
+        charCount.textContent = messageInput.value.length + " / 2000";
+    }
+
+    messageInput.addEventListener("input", updateCharCount);
+    updateCharCount();
+
+    // Selected rating hint
+    const ratingHint = document.getElementById("ratingHint");
+    const ratingInputs = document.querySelectorAll(
+        'input[name="rating"]'
+    );
+
+    const ratingLabels = {
+        1: "Needs Improvement — thank you for being honest.",
+        2: "Fair — your suggestions are welcome.",
+        3: "Good — thanks for your feedback!",
+        4: "Very Good — glad to hear that!",
+        5: "Excellent — thank you for your support!"
+    };
+
+    ratingInputs.forEach(function (input) {
+        input.addEventListener("change", function () {
+            ratingHint.textContent = ratingLabels[this.value];
+        });
+    });
+
+    // Search and rating filter
+    const searchInput = document.getElementById("feedbackSearch");
+    const ratingFilter = document.getElementById("ratingFilter");
+    const feedbackCards = Array.from(
+        document.querySelectorAll("#feedbackList .review-card")
+    );
+    const feedbackCount = document.getElementById("feedbackCount");
+    const noMatches = document.getElementById("noMatches");
+
+    function filterFeedback() {
+        const query = searchInput.value.trim().toLowerCase();
+        const selectedRating = ratingFilter.value;
+        let visibleCount = 0;
+
+        feedbackCards.forEach(function (card) {
+            const name = card.dataset.name || "";
+            const message = card.dataset.message || "";
+            const rating = card.dataset.rating || "";
+
+            const matchesText =
+                name.includes(query) || message.includes(query);
+
+            const matchesRating =
+                selectedRating === "all" || rating === selectedRating;
+
+            const visible = matchesText && matchesRating;
+            card.style.display = visible ? "" : "none";
+
+            if (visible) visibleCount++;
+        });
+
+        feedbackCount.textContent =
+            "Showing " + visibleCount + " of " +
+            feedbackCards.length + " feedback entries";
+
+        noMatches.style.display =
+            feedbackCards.length > 0 && visibleCount === 0
+                ? "block"
+                : "none";
+    }
+
+    searchInput.addEventListener("input", filterFeedback);
+    ratingFilter.addEventListener("change", filterFeedback);
+
+    document.getElementById("clearFilters").addEventListener("click", function () {
+        searchInput.value = "";
+        ratingFilter.value = "all";
+        filterFeedback();
+    });
+
+    document.getElementById("resetSearch").addEventListener("click", function () {
+        searchInput.value = "";
+        ratingFilter.value = "all";
+        filterFeedback();
+    });
+
+    filterFeedback();
+
+    // Avoid accidental double-click submission.
+    const form = document.getElementById("feedbackForm");
+    const submitButton = document.getElementById("submitFeedback");
+
+    form.addEventListener("submit", function () {
+        if (!form.checkValidity()) return;
+
+        submitButton.disabled = true;
+        submitButton.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2" ' +
+            'aria-hidden="true"></span>Submitting...';
+    });
+
+});
+</script>
+{% endblock %}

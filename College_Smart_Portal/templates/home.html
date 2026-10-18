@@ -1,0 +1,821 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Government Polytechnic Hingoli{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    .edu-home {
+        --navy: #102542;
+        --blue: #176b87;
+        --cyan: #dff6ff;
+        color: #243247;
+    }
+
+    .edu-home * {
+        box-sizing: border-box;
+    }
+
+    .edu-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 26px;
+        padding: clamp(28px, 5vw, 65px);
+        background: linear-gradient(120deg, #102542, #176b87 65%, #35a7b8);
+        color: white;
+        isolation: isolate;
+    }
+
+    .edu-hero::before,
+    .edu-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        z-index: -1;
+        background: rgba(255,255,255,.07);
+    }
+
+    .edu-hero::before {
+        width: 300px;
+        height: 300px;
+        right: -75px;
+        top: -100px;
+    }
+
+    .edu-hero::after {
+        width: 200px;
+        height: 200px;
+        right: 150px;
+        bottom: -130px;
+    }
+
+    .edu-label {
+        display: inline-block;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.25);
+        font-size: .9rem;
+        margin-bottom: 20px;
+    }
+
+    .edu-hero h1 {
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .edu-hero p {
+        max-width: 700px;
+        color: #e5f6ff;
+        line-height: 1.9;
+    }
+
+    .edu-btn {
+        border-radius: 12px;
+        padding: 12px 21px;
+        font-weight: 600;
+        transition: .25s ease;
+    }
+
+    .edu-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .edu-section {
+        padding-top: 55px;
+    }
+
+    .edu-section-title {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 800;
+        color: var(--navy);
+    }
+
+    .edu-subtitle {
+        color: #68788c;
+        max-width: 720px;
+        line-height: 1.8;
+    }
+
+    .edu-mini-card {
+        border: 1px solid #e8eef5;
+        border-radius: 18px;
+        padding: 23px;
+        height: 100%;
+        background: white;
+        box-shadow: 0 6px 22px rgba(16,37,66,.045);
+        transition: transform .25s, box-shadow .25s;
+    }
+
+    .edu-mini-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 32px rgba(16,37,66,.12);
+    }
+
+    .edu-icon {
+        width: 55px;
+        height: 55px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-size: 1.55rem;
+        margin-bottom: 18px;
+    }
+
+    .edu-card-title {
+        color: var(--navy);
+        font-weight: 750;
+        font-size: 1.15rem;
+    }
+
+    .edu-mini-card p {
+        color: #64748b;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .edu-filter {
+        border: 1px solid #dbe4ee;
+        background: white;
+        color: #334155;
+        border-radius: 50px;
+        padding: 9px 17px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .edu-filter:hover,
+    .edu-filter.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .edu-search {
+        border: 1px solid #dbe4ee;
+        border-radius: 14px;
+        padding: 13px 16px;
+        min-height: 48px;
+    }
+
+    .edu-search:focus {
+        border-color: #176b87;
+        box-shadow: 0 0 0 .2rem rgba(23,107,135,.12);
+    }
+
+    .edu-band {
+        background: linear-gradient(135deg, #edf8ff, #f5f3ff);
+        border: 1px solid #e1edfa;
+        border-radius: 24px;
+        padding: clamp(25px, 4vw, 42px);
+    }
+
+    .edu-step {
+        border-left: 3px solid #38a6bd;
+        padding-left: 17px;
+        margin-bottom: 23px;
+    }
+
+    .edu-step:last-child {
+        margin-bottom: 0;
+    }
+
+    .edu-step h3 {
+        font-size: 1.05rem;
+        font-weight: 750;
+        color: var(--navy);
+    }
+
+    .edu-step p {
+        color: #64748b;
+        line-height: 1.75;
+        margin-bottom: 0;
+    }
+
+    .edu-quote {
+        background: linear-gradient(120deg, #102542, #176b87);
+        color: white;
+        padding: clamp(28px, 5vw, 48px);
+        border-radius: 24px;
+        text-align: center;
+    }
+
+    .edu-quote p {
+        max-width: 800px;
+        margin: 14px auto 0;
+        line-height: 1.9;
+        color: #e4f4fc;
+    }
+
+    .edu-home .edu-hidden {
+        display: none !important;
+    }
+
+    .edu-home .edu-mini-card h3 {
+        margin-bottom: 10px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .edu-home * {
+            transition: none !important;
+            animation: none !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
+
+
+<div class="edu-home">
+
+    <!-- HERO -->
+    <section class="edu-hero shadow-sm">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+
+                <span class="edu-label">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Knowledge • Skills • Success
+                </span>
+
+                <h1>Welcome to Our<br>College Community 🎓</h1>
+
+                <p class="fs-5 mt-3">
+                    Discover knowledge, develop technical skills
+                    and explore new opportunities. Education helps
+                    students build confidence, think creatively
+                    and prepare for a brighter future.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a href="#education"
+                       class="btn btn-warning edu-btn">
+                        <i class="bi bi-book-half"></i>
+                        Explore Education
+                    </a>
+
+                    <a href="#student-growth"
+                       class="btn btn-outline-light edu-btn">
+                        <i class="bi bi-stars"></i>
+                        Student Development
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 text-center">
+                <div class="p-4">
+                    <i class="bi bi-mortarboard"
+                       style="font-size: clamp(6rem, 14vw, 10rem);
+                       color: #ffffff; opacity: .95;"></i>
+
+                    <h2 class="h4 fw-bold mt-2">
+                        Learn. Grow. Achieve.
+                    </h2>
+
+                    <p class="mb-0 mx-auto">
+                        Every day is an opportunity to learn something new.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- INTRODUCTION -->
+    <section class="edu-section" id="education">
+        <div class="text-center mb-4">
+            <span class="badge rounded-pill text-bg-info mb-2">
+                <i class="bi bi-lightbulb"></i> Discover Learning
+            </span>
+
+            <h2 class="edu-section-title">
+                Education Opens New Doors
+            </h2>
+
+            <p class="edu-subtitle mx-auto">
+                College education is about more than textbooks and
+                examinations. It develops knowledge, independent
+                thinking, practical abilities and responsibility.
+                It prepares students to face challenges in their
+                personal and professional lives.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="edu-mini-card text-center">
+                    <div class="edu-icon"
+                         style="background:#e6f1ff;color:#176b87;">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h3 class="edu-card-title">📚 Academic Learning</h3>
+                    <p>
+                        Build a strong foundation through classroom
+                        teaching, reading, discussion and regular study.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="edu-mini-card text-center">
+                    <div class="edu-icon"
+                         style="background:#e3f8ee;color:#168653;">
+                        <i class="bi bi-gear-wide-connected"></i>
+                    </div>
+                    <h3 class="edu-card-title">🔬 Practical Knowledge</h3>
+                    <p>
+                        Connect theoretical concepts with experiments,
+                        demonstrations and hands-on learning activities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="edu-mini-card text-center">
+                    <div class="edu-icon"
+                         style="background:#fff0df;color:#bd6b16;">
+                        <i class="bi bi-rocket-takeoff"></i>
+                    </div>
+                    <h3 class="edu-card-title">🚀 Future Readiness</h3>
+                    <p>
+                        Improve problem-solving, communication and
+                        technical skills for future opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- SEARCH AND FILTERS -->
+    <section class="edu-section" id="learning-areas">
+        <div class="mb-4">
+            <h2 class="edu-section-title">
+                Explore Learning Areas
+            </h2>
+
+            <p class="edu-subtitle">
+                Search for an educational topic or select a category
+                to discover different aspects of college life.
+            </p>
+        </div>
+
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"
+                          style="border-radius:14px 0 0 14px;">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input type="search"
+                           id="eduSearch"
+                           class="form-control edu-search"
+                           style="border-radius:0 14px 14px 0;"
+                           placeholder="Search education, library, career..."
+                           aria-label="Search educational topics">
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="d-flex flex-wrap gap-2"
+                     id="eduFilters">
+
+                    <button type="button"
+                            class="edu-filter active"
+                            data-filter="all"
+                            aria-pressed="true">
+                        All Topics
+                    </button>
+
+                    <button type="button"
+                            class="edu-filter"
+                            data-filter="academic"
+                            aria-pressed="false">
+                        <i class="bi bi-book"></i> Academic
+                    </button>
+
+                    <button type="button"
+                            class="edu-filter"
+                            data-filter="technical"
+                            aria-pressed="false">
+                        <i class="bi bi-cpu"></i> Technical
+                    </button>
+
+                    <button type="button"
+                            class="edu-filter"
+                            data-filter="personal"
+                            aria-pressed="false">
+                        <i class="bi bi-people"></i> Personal Growth
+                    </button>
+
+                    <button type="button"
+                            class="edu-filter"
+                            data-filter="career"
+                            aria-pressed="false">
+                        <i class="bi bi-briefcase"></i> Career
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4" id="eduCards">
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="academic">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#e8edff;color:#4257b2;">
+                        <i class="bi bi-journal-bookmark"></i>
+                    </div>
+                    <h3 class="edu-card-title">📖 Classroom Learning</h3>
+                    <p>
+                        Classroom learning helps students understand
+                        fundamental concepts, ask questions, exchange
+                        ideas and develop subject knowledge.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="technical">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#e1f7f5;color:#12867b;">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <h3 class="edu-card-title">⚙️ Laboratory Learning</h3>
+                    <p>
+                        Practical sessions allow learners to perform
+                        experiments, observe results and understand
+                        how technical concepts work in practice.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="academic">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#fff1e6;color:#c56a20;">
+                        <i class="bi bi-book-half"></i>
+                    </div>
+                    <h3 class="edu-card-title">📚 Library and Reading</h3>
+                    <p>
+                        Books, reference materials and educational
+                        resources support independent study, research
+                        and examination preparation.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="personal">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#f2e8ff;color:#8245a7;">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h3 class="edu-card-title">🤝 Teamwork and Leadership</h3>
+                    <p>
+                        Group activities help students develop
+                        cooperation, communication, responsibility
+                        and leadership skills.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="career">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#e1f7e9;color:#168653;">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
+                    <h3 class="edu-card-title">💼 Career Guidance</h3>
+                    <p>
+                        Career planning helps students explore
+                        suitable occupations, internships, further
+                        education and professional development.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="technical">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#ffe8ed;color:#c43d63;">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h3 class="edu-card-title">💡 Innovation and Creativity</h3>
+                    <p>
+                        Creative thinking encourages students to
+                        explore ideas, analyse challenges and find
+                        responsible, practical solutions.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="personal">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#fff5d9;color:#aa7900;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h3 class="edu-card-title">⏰ Discipline and Time</h3>
+                    <p>
+                        Punctuality, regular attendance, planning
+                        and consistent effort support academic
+                        progress and personal responsibility.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="career">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#e6f1ff;color:#176b87;">
+                        <i class="bi bi-mortarboard"></i>
+                    </div>
+                    <h3 class="edu-card-title">🎓 Higher Education</h3>
+                    <p>
+                        Students can explore degree programmes,
+                        specialised courses and other learning
+                        pathways based on eligibility and interests.
+                    </p>
+                </article>
+            </div>
+
+            <div class="col-md-6 col-xl-4 edu-item"
+                 data-category="academic">
+                <article class="edu-mini-card">
+                    <div class="edu-icon"
+                         style="background:#f0eaff;color:#7251b5;">
+                        <i class="bi bi-globe2"></i>
+                    </div>
+                    <h3 class="edu-card-title">🌍 Digital Learning</h3>
+                    <p>
+                        Online educational resources can support
+                        revision, self-paced learning and access
+                        to additional explanations and tutorials.
+                    </p>
+                </article>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4 p-4"
+             id="eduNoResults"
+             style="display:none;">
+            <i class="bi bi-search fs-1 text-secondary"></i>
+            <h3 class="h5 mt-2">No topics found</h3>
+            <p class="text-secondary">
+                Try another keyword or choose a different category.
+            </p>
+
+            <button class="btn btn-primary edu-btn"
+                    type="button"
+                    id="eduReset">
+                Show All Topics
+            </button>
+        </div>
+    </section>
+
+
+    <!-- STUDENT DEVELOPMENT -->
+    <section class="edu-section" id="student-growth">
+        <div class="edu-band">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                    <span class="badge text-bg-primary rounded-pill mb-3">
+                        <i class="bi bi-stars"></i> Beyond the Classroom
+                    </span>
+
+                    <h2 class="edu-section-title">
+                        Grow as a Student and as a Person
+                    </h2>
+
+                    <p class="edu-subtitle mb-0">
+                        A meaningful college experience combines
+                        academic progress with good habits,
+                        practical learning and respect for others.
+                    </p>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="row g-3">
+
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-4 h-100">
+                                <i class="bi bi-chat-dots fs-3 text-primary"></i>
+                                <h3 class="h6 fw-bold mt-2">Communication</h3>
+                                <p class="small text-secondary mb-0">
+                                    Express ideas clearly and listen
+                                    respectfully to others.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-4 h-100">
+                                <i class="bi bi-puzzle fs-3 text-success"></i>
+                                <h3 class="h6 fw-bold mt-2">Problem Solving</h3>
+                                <p class="small text-secondary mb-0">
+                                    Analyse information and consider
+                                    different solutions.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-4 h-100">
+                                <i class="bi bi-heart fs-3 text-danger"></i>
+                                <h3 class="h6 fw-bold mt-2">Respect and Values</h3>
+                                <p class="small text-secondary mb-0">
+                                    Practise honesty, empathy and
+                                    responsibility.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-4 h-100">
+                                <i class="bi bi-graph-up-arrow fs-3 text-warning"></i>
+                                <h3 class="h6 fw-bold mt-2">Continuous Learning</h3>
+                                <p class="small text-secondary mb-0">
+                                    Stay curious and keep improving
+                                    knowledge and abilities.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- LEARNING HABITS -->
+    <section class="edu-section">
+        <div class="mb-4">
+            <h2 class="edu-section-title">Build Better Learning Habits ✨</h2>
+            <p class="edu-subtitle">
+                Small, consistent steps can make studying more
+                organised and effective.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="edu-step">
+                    <h3>01. Plan Your Study Time</h3>
+                    <p>
+                        Set realistic daily goals and divide large
+                        topics into smaller study sessions.
+                    </p>
+                </div>
+
+                <div class="edu-step">
+                    <h3>02. Practise Regularly</h3>
+                    <p>
+                        Revise important concepts and solve practice
+                        questions to strengthen understanding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="edu-step">
+                    <h3>03. Ask Questions</h3>
+                    <p>
+                        Discuss difficult topics with teachers
+                        and classmates instead of leaving doubts unresolved.
+                    </p>
+                </div>
+
+                <div class="edu-step">
+                    <h3>04. Maintain Balance</h3>
+                    <p>
+                        Make time for adequate rest, physical activity
+                        and enjoyable activities alongside studies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- INSPIRATIONAL BANNER -->
+    <section class="edu-section pb-3">
+        <div class="edu-quote shadow-sm">
+            <i class="bi bi-quote"
+               style="font-size:3rem;color:#ffd166;"></i>
+
+            <h2 class="fw-bold">Learn Today, Lead Tomorrow 🌟</h2>
+
+            <p>
+                Every lesson gives us knowledge, every challenge
+                teaches us something new, and every effort helps us
+                move forward. Stay curious, keep learning and believe
+                in the value of your education.
+            </p>
+
+            <a href="#education"
+               class="btn btn-light edu-btn mt-4">
+                <i class="bi bi-arrow-up-circle"></i>
+                Back to Top
+            </a>
+        </div>
+    </section>
+
+</div>
+
+
+<!-- SEARCH AND FILTER FUNCTIONALITY -->
+<script>
+(function () {
+    const searchInput = document.getElementById("eduSearch");
+    const filterButtons = document.querySelectorAll(".edu-filter");
+    const cards = document.querySelectorAll(".edu-item");
+    const noResults = document.getElementById("eduNoResults");
+    const resetButton = document.getElementById("eduReset");
+
+    if (!searchInput || !noResults || !resetButton) return;
+
+    let activeCategory = "all";
+
+    function filterCards() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+            const category = card.dataset.category || "";
+            const text = card.innerText.toLowerCase();
+
+            const matchesCategory =
+                activeCategory === "all" ||
+                category === activeCategory;
+
+            const matchesSearch = text.includes(query);
+            const show = matchesCategory && matchesSearch;
+
+            card.classList.toggle("edu-hidden", !show);
+
+            if (show) visibleCount++;
+        });
+
+        noResults.style.display =
+            visibleCount === 0 ? "block" : "none";
+    }
+
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            activeCategory = button.dataset.filter;
+
+            filterButtons.forEach(function (item) {
+                const isActive = item === button;
+
+                item.classList.toggle("active", isActive);
+                item.setAttribute(
+                    "aria-pressed",
+                    isActive ? "true" : "false"
+                );
+            });
+
+            filterCards();
+        });
+    });
+
+    searchInput.addEventListener("input", filterCards);
+
+    resetButton.addEventListener("click", function () {
+        searchInput.value = "";
+        activeCategory = "all";
+
+        filterButtons.forEach(function (button) {
+            const isActive = button.dataset.filter === "all";
+
+            button.classList.toggle("active", isActive);
+            button.setAttribute(
+                "aria-pressed",
+                isActive ? "true" : "false"
+            );
+        });
+
+        filterCards();
+        searchInput.focus();
+    });
+})();
+</script>
+
+{% endblock %}

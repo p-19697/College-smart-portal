@@ -1,0 +1,600 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Add Project | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<style>
+.project-form-page {
+    padding: 25px 0 45px;
+    background: #f5f7fc;
+    border-radius: 18px;
+}
+
+.project-form-page .project-card {
+    max-width: 950px;
+    margin: auto;
+    background: #fff;
+    border: 1px solid #e7ebf5;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(30, 45, 85, .08);
+}
+
+.project-form-page .project-hero {
+    padding: 30px;
+    color: #fff;
+    background: linear-gradient(120deg, #203a75, #4361c9, #7954c8);
+}
+
+.project-form-page .hero-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.22);
+}
+
+.project-form-page .project-body {
+    padding: 30px;
+}
+
+.project-form-page .form-section {
+    padding: 23px;
+    margin-bottom: 23px;
+    border: 1px solid #edf0f7;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.project-form-page .section-heading {
+    color: #293b70;
+    font-size: 17px;
+    font-weight: 750;
+    margin-bottom: 20px;
+}
+
+.project-form-page .form-label {
+    color: #34415c;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.project-form-page .form-control,
+.project-form-page .form-select {
+    min-height: 47px;
+    border: 1px solid #dce3ef;
+    border-radius: 11px;
+    font-size: 14px;
+    padding: 11px 13px;
+}
+
+.project-form-page textarea.form-control {
+    min-height: 145px;
+    resize: vertical;
+}
+
+.project-form-page .form-control:focus,
+.project-form-page .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102,126,234,.13);
+}
+
+.project-form-page .field-hint {
+    font-size: 11px;
+    color: #8590a5;
+    margin-top: 6px;
+}
+
+.project-form-page .required {
+    color: #e5484d;
+}
+
+.project-form-page .progress {
+    height: 7px;
+    border-radius: 20px;
+    background: #e9edf7;
+}
+
+.project-form-page .progress-bar {
+    background: linear-gradient(90deg, #5269d9, #8b5cf6);
+    transition: width .25s ease;
+}
+
+.project-form-page .preview-box {
+    padding: 21px;
+    border-radius: 16px;
+    border: 1px solid #e0e7ff;
+    background: linear-gradient(135deg, #f0f4ff, #faf7ff);
+}
+
+.project-form-page .preview-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dfe7ff;
+    border-radius: 14px;
+    font-size: 23px;
+}
+
+.project-form-page .preview-label {
+    color: #8490a5;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.project-form-page .preview-value {
+    color: #293b70;
+    font-size: 13px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.project-form-page .status-badge {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #fff0d6;
+    color: #946200;
+}
+
+.project-form-page .btn-save {
+    border: none;
+    color: white;
+    background: linear-gradient(120deg, #4058c8, #7555cf);
+    border-radius: 11px;
+    padding: 12px 22px;
+    font-weight: 700;
+}
+
+.project-form-page .btn-save:hover {
+    color: white;
+    box-shadow: 0 6px 18px rgba(74,86,190,.22);
+    transform: translateY(-1px);
+}
+
+.project-form-page .btn-cancel {
+    border-radius: 11px;
+    padding: 12px 19px;
+    font-weight: 600;
+}
+
+.project-form-page .form-footer {
+    padding-top: 22px;
+    border-top: 1px solid #edf0f7;
+}
+
+@media(max-width: 576px) {
+    .project-form-page .project-hero,
+    .project-form-page .project-body {
+        padding: 20px;
+    }
+
+    .project-form-page .form-section {
+        padding: 16px;
+    }
+
+    .project-form-page .hero-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 25px;
+    }
+}
+</style>
+
+<div class="project-form-page">
+<div class="container">
+
+    <div class="project-card">
+
+        <!-- Hero Header -->
+        <div class="project-hero">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+
+                <div class="hero-icon">🚀</div>
+
+                <div class="flex-grow-1">
+                    <div class="small text-white-50 mb-1">
+                        COLLEGE SMART PORTAL / PROJECT MANAGEMENT
+                    </div>
+
+                    <h1 class="h3 fw-bold mb-2">Add New Project</h1>
+
+                    <p class="small text-white-50 mb-0">
+                        💡 Showcase student innovation, creativity and technical skills.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('projects') }}"
+                   class="btn btn-light btn-sm rounded-pill px-3">
+                    ← All Projects
+                </a>
+
+            </div>
+        </div>
+
+        <div class="project-body">
+
+            <!-- Progress -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small fw-bold text-secondary">
+                        📊 Project Form Completion
+                    </span>
+                    <span class="small fw-bold text-primary" id="progressText">
+                        0% completed
+                    </span>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                         id="formProgress"
+                         style="width:0%">
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" id="projectForm">
+
+                <!-- Project Details -->
+                <div class="form-section">
+
+                    <h2 class="section-heading">
+                        💡 Project Information
+                    </h2>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="title">
+                            Project Title <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="title"
+                            name="title"
+                            maxlength="150"
+                            placeholder="e.g. Smart Waste Management System"
+                            required
+                        >
+
+                        <div class="field-hint">
+                            ✨ Enter a clear and meaningful project name.
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="department">
+                                🏢 Department <span class="required">*</span>
+                            </label>
+
+                            <select class="form-select"
+                                    id="department"
+                                    name="department"
+                                    required>
+
+                                <option value="">Select Department</option>
+                                <option value="Computer Engineering">
+                                    Computer Engineering
+                                </option>
+                                <option value="Electronics Engineering">
+                                    Electronics Engineering
+                                </option>
+                                <option value="Mechanical Engineering">
+                                    Mechanical Engineering
+                                </option>
+
+                            </select>
+
+                            <div class="field-hint">
+                                🔎 Select the department responsible for the project.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="student_name">
+                                👥 Student / Team Name <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="student_name"
+                                name="student_name"
+                                maxlength="150"
+                                placeholder="Enter student or team name"
+                                required
+                            >
+
+                            <div class="field-hint">
+                                🧑‍💻 Add the student name or project team members.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-section">
+
+                    <h2 class="section-heading">
+                        📝 Project Description
+                    </h2>
+
+                    <label class="form-label" for="description">
+                        Describe Your Project <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        id="description"
+                        name="description"
+                        minlength="10"
+                        maxlength="2000"
+                        placeholder="Explain the problem, project objectives, main features and how your project works..."
+                        required
+                    ></textarea>
+
+                    <div class="d-flex flex-wrap justify-content-between gap-2 mt-2">
+                        <span class="field-hint">
+                            💬 Mention the problem and your proposed solution.
+                        </span>
+
+                        <span class="small text-secondary" id="charCount">
+                            0 / 2000 characters
+                        </span>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">💭 Description Writing Tips</label>
+
+                        <div class="row g-2">
+
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-light small">
+                                    🎯 <strong>Objective</strong>
+                                    <div class="text-secondary mt-1">
+                                        What problem will it solve?
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-light small">
+                                    ⚙️ <strong>Features</strong>
+                                    <div class="text-secondary mt-1">
+                                        What will the system do?
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-light small">
+                                    🌟 <strong>Benefits</strong>
+                                    <div class="text-secondary mt-1">
+                                        Who will benefit from it?
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Status -->
+                <div class="form-section">
+
+                    <h2 class="section-heading">
+                        📌 Project Status
+                    </h2>
+
+                    <label class="form-label" for="status">
+                        Current Progress
+                    </label>
+
+                    <select class="form-select" id="status" name="status">
+                        <option value="In Progress">🟡 In Progress</option>
+                        <option value="Completed">🟢 Completed</option>
+                        <option value="On Hold">⏸️ On Hold</option>
+                    </select>
+
+                    <div class="field-hint">
+                        📍 Choose the current status of the project.
+                    </div>
+
+                </div>
+
+                <!-- Live Preview -->
+                <div class="preview-box mb-4">
+
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="preview-icon">🚀</div>
+
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Live Project Preview</h3>
+                            <p class="small text-secondary mb-0">
+                                Your project details will appear here as you type.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h4 class="h5 fw-bold mb-3" id="previewTitle">
+                        Your Project Title
+                    </h4>
+
+                    <p class="small text-secondary mb-3"
+                       id="previewDescription"
+                       style="white-space:pre-wrap; overflow-wrap:anywhere">
+                        Your project description will appear here.
+                    </p>
+
+                    <div class="row g-3">
+
+                        <div class="col-sm-4">
+                            <div class="preview-label">Department</div>
+                            <div class="preview-value" id="previewDepartment">
+                                Not selected
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="preview-label">Student / Team</div>
+                            <div class="preview-value" id="previewTeam">
+                                Not entered
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="preview-label">Status</div>
+                            <span class="status-badge" id="previewStatus">
+                                🟡 In Progress
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-footer d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+                    <div class="small text-secondary">
+                        <span class="required">*</span> Required fields
+                        <div class="mt-1">
+                            🔍 Review your details before submitting.
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <a href="{{ url_for('projects') }}"
+                           class="btn btn-outline-secondary btn-cancel">
+                            ✖ Cancel
+                        </a>
+
+                        <button type="reset"
+                                class="btn btn-outline-primary btn-cancel">
+                            ↺ Reset
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-save"
+                                id="saveButton">
+                            💾 Save Project
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center text-secondary small mt-3">
+        🎓 College Smart Portal · Project Management
+    </div>
+
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("projectForm");
+
+    const title = document.getElementById("title");
+    const department = document.getElementById("department");
+    const team = document.getElementById("student_name");
+    const description = document.getElementById("description");
+    const status = document.getElementById("status");
+
+    const requiredFields = [title, department, team, description];
+
+    function updateProgress() {
+        let completed = 0;
+
+        requiredFields.forEach(function (field) {
+            if (field.value.trim() !== "") {
+                completed++;
+            }
+        });
+
+        const percentage = Math.round(
+            completed / requiredFields.length * 100
+        );
+
+        document.getElementById("formProgress").style.width =
+            percentage + "%";
+
+        document.getElementById("progressText").textContent =
+            percentage + "% completed";
+    }
+
+    function updatePreview() {
+        document.getElementById("previewTitle").textContent =
+            title.value.trim() || "Your Project Title";
+
+        document.getElementById("previewDepartment").textContent =
+            department.value || "Not selected";
+
+        document.getElementById("previewTeam").textContent =
+            team.value.trim() || "Not entered";
+
+        document.getElementById("previewDescription").textContent =
+            description.value.trim() ||
+            "Your project description will appear here.";
+
+        const statusText = status.value;
+
+        const statusLabels = {
+            "In Progress": "🟡 In Progress",
+            "Completed": "🟢 Completed",
+            "On Hold": "⏸️ On Hold"
+        };
+
+        document.getElementById("previewStatus").textContent =
+            statusLabels[statusText] || statusText;
+
+        document.getElementById("charCount").textContent =
+            description.value.length + " / 2000 characters";
+
+        updateProgress();
+    }
+
+    form.addEventListener("input", updatePreview);
+    form.addEventListener("change", updatePreview);
+
+    form.addEventListener("reset", function () {
+        setTimeout(updatePreview, 0);
+    });
+
+    form.addEventListener("submit", function (event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            form.reportValidity();
+            return;
+        }
+
+        const button = document.getElementById("saveButton");
+        button.disabled = true;
+        button.textContent = "⏳ Saving Project...";
+    });
+
+    updatePreview();
+});
+</script>
+
+{% endblock %}
+```

@@ -1,0 +1,704 @@
+
+{% extends "base.html" %}
+
+{% block title %}About Our College | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+.about-page {
+    --about-navy: #102542;
+    --about-blue: #176b87;
+    color: #25354a;
+}
+
+.about-page .about-hero {
+    padding: clamp(28px, 5vw, 60px);
+    border-radius: 25px;
+    color: white;
+    background: linear-gradient(125deg, #102542, #176b87, #37a6b8);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-page .about-hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.6rem);
+    font-weight: 800;
+}
+
+.about-page .about-hero p {
+    color: #e5f6ff;
+    line-height: 1.9;
+    max-width: 750px;
+}
+
+.about-page .about-section {
+    margin-top: 42px;
+}
+
+.about-page .about-heading {
+    color: var(--about-navy);
+    font-weight: 800;
+}
+
+.about-page .about-subtitle {
+    color: #69798c;
+    line-height: 1.8;
+}
+
+.about-page .about-card {
+    background: #fff;
+    border: 1px solid #e8eef5;
+    border-radius: 18px;
+    padding: 24px;
+    height: 100%;
+    box-shadow: 0 6px 22px rgba(16,37,66,.05);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.about-page .about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(16,37,66,.12);
+}
+
+.about-page .about-icon {
+    width: 54px;
+    height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 17px;
+}
+
+.about-page .about-card h3 {
+    font-size: 1.13rem;
+    font-weight: 750;
+    color: var(--about-navy);
+}
+
+.about-page .about-card p {
+    color: #64748b;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+.about-page .about-info {
+    border-radius: 18px;
+    background: #f1f7fc;
+    border: 1px solid #e0eaf4;
+    padding: 25px;
+    height: 100%;
+}
+
+.about-page .info-label {
+    font-size: .85rem;
+    color: #718096;
+    margin-bottom: 5px;
+}
+
+.about-page .info-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--about-navy);
+    overflow-wrap: anywhere;
+}
+
+.about-page .about-search {
+    border-radius: 12px;
+    padding: 12px 15px;
+    border: 1px solid #dbe4ee;
+}
+
+.about-page .about-filter {
+    border: 1px solid #dbe4ee;
+    border-radius: 50px;
+    padding: 9px 16px;
+    background: white;
+    color: #334155;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.about-page .about-filter:hover,
+.about-page .about-filter.active {
+    color: white;
+    background: var(--about-navy);
+    border-color: var(--about-navy);
+}
+
+.about-page .about-hidden {
+    display: none !important;
+}
+
+.about-page .about-banner {
+    border-radius: 22px;
+    padding: clamp(25px, 4vw, 40px);
+    background: linear-gradient(120deg, #eaf7ff, #f4f0ff);
+    border: 1px solid #e1edf8;
+}
+
+.about-page .about-closing {
+    border-radius: 23px;
+    padding: clamp(28px, 5vw, 45px);
+    background: linear-gradient(125deg, #102542, #176b87);
+    color: white;
+    text-align: center;
+}
+
+.about-page .about-closing p {
+    color: #e5f6ff;
+    line-height: 1.9;
+    max-width: 760px;
+    margin: 12px auto 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-page * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+</style>
+
+
+<div class="about-page">
+
+    <!-- HERO SECTION -->
+    <section class="about-hero shadow-sm">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+
+                <span class="badge rounded-pill text-bg-warning mb-3 p-2">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Education • Knowledge • Growth
+                </span>
+
+                <h1>About Our College 🏫</h1>
+
+                <p class="fs-5 mt-3">
+                    A place where knowledge meets opportunity,
+                    curiosity inspires learning, and students
+                    develop the skills needed for their future.
+                    College education encourages academic growth,
+                    practical understanding and personal development.
+                </p>
+
+                <a href="#college-information"
+                   class="btn btn-light btn-lg mt-2"
+                   style="border-radius:12px;font-weight:600;">
+                    <i class="bi bi-arrow-down-circle"></i>
+                    Discover More
+                </a>
+            </div>
+
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-buildings"
+                   style="font-size:clamp(6rem,14vw,9rem);"></i>
+                <h2 class="h4 fw-bold mt-2">
+                    Learn • Explore • Achieve
+                </h2>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- COLLEGE INFORMATION -->
+    <section class="about-section" id="college-information">
+        <div class="mb-4">
+            <h2 class="about-heading">
+                <i class="bi bi-info-circle-fill text-primary"></i>
+                College at a Glance
+            </h2>
+
+            <p class="about-subtitle">
+                An overview of the institution and the academic
+                departments represented on this page.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-7">
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#e5f1ff;color:#176b87;">
+                        <i class="bi bi-bank"></i>
+                    </div>
+
+                    <h3>{{ college.name }}</h3>
+
+                    <p>
+                        A college is an important centre of education
+                        where students develop subject knowledge,
+                        practical skills, discipline and confidence.
+                        Technical education helps learners understand
+                        scientific principles and apply them to
+                        practical and professional situations.
+                    </p>
+
+                    <p class="mt-3">
+                        Through classroom teaching, practical sessions,
+                        reading, group activities and independent study,
+                        students can strengthen their understanding
+                        and prepare for future opportunities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="about-info">
+
+                    <h3 class="h5 fw-bold mb-4">
+                        <i class="bi bi-card-list text-primary"></i>
+                        Institution Information
+                    </h3>
+
+                    <div class="mb-3">
+                        <div class="info-label">
+                            <i class="bi bi-building"></i> College Name
+                        </div>
+                        <div class="info-value">
+                            {{ college.name }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-3">
+                        <div class="info-label">
+                            <i class="bi bi-geo-alt"></i> Location
+                        </div>
+                        <div class="info-value">
+                            {{ college.location }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-3">
+                        <div class="info-label">
+                            <i class="bi bi-calendar3"></i> Establishment Year
+                        </div>
+                        <div class="info-value">
+                            {{ college.established }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div>
+                        <div class="info-label">
+                            <i class="bi bi-mortarboard"></i> Affiliation
+                        </div>
+                        <div class="info-value">
+                            {{ college.affiliation }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="alert alert-info mt-3 rounded-3">
+            <i class="bi bi-info-circle-fill"></i>
+            <strong>Note:</strong>
+            Verify official institutional details with the college
+            before using them in a formal report.
+        </div>
+    </section>
+
+
+    <!-- DEPARTMENTS -->
+    <section class="about-section" id="departments">
+
+        <div class="mb-4">
+            <h2 class="about-heading">
+                <i class="bi bi-diagram-3-fill text-primary"></i>
+                Academic Departments
+            </h2>
+
+            <p class="about-subtitle">
+                Explore the branches represented in the college
+                information. Search by name or filter the department cards.
+            </p>
+        </div>
+
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-lg-5">
+                <input type="search"
+                       id="departmentSearch"
+                       class="form-control about-search"
+                       placeholder="🔎 Search department..."
+                       aria-label="Search departments">
+            </div>
+
+            <div class="col-lg-7">
+                <div class="d-flex flex-wrap gap-2"
+                     id="departmentFilters">
+
+                    <button type="button"
+                            class="about-filter active"
+                            data-filter="all"
+                            aria-pressed="true">
+                        All Departments
+                    </button>
+
+                    <button type="button"
+                            class="about-filter"
+                            data-filter="computer"
+                            aria-pressed="false">
+                        <i class="bi bi-pc-display"></i> Computer
+                    </button>
+
+                    <button type="button"
+                            class="about-filter"
+                            data-filter="electronics"
+                            aria-pressed="false">
+                        <i class="bi bi-cpu"></i> Electronics
+                    </button>
+
+                    <button type="button"
+                            class="about-filter"
+                            data-filter="mechanical"
+                            aria-pressed="false">
+                        <i class="bi bi-gear"></i> Mechanical
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4" id="departmentCards">
+
+            {% for department in college.departments %}
+            <div class="col-md-6 col-xl-4 department-item"
+                 data-name="{{ department|lower }}">
+
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#e5f1ff;color:#176b87;">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+
+                    <h3>{{ department }}</h3>
+
+                    <p>
+                        Explore the fundamental concepts, practical
+                        learning opportunities and technical skills
+                        associated with this field of study.
+                    </p>
+
+                    <div class="mt-3">
+                        <span class="badge rounded-pill text-bg-light border">
+                            <i class="bi bi-book"></i> Academic Learning
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    Department information is currently unavailable.
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="text-center mt-4"
+             id="departmentNoResults"
+             style="display:none;">
+            <i class="bi bi-search fs-1 text-secondary"></i>
+            <p class="mt-2 text-secondary">
+                No matching departments found.
+            </p>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="departmentReset">
+                Show All Departments
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- ACADEMIC ENVIRONMENT -->
+    <section class="about-section">
+        <div class="mb-4">
+            <h2 class="about-heading">
+                <i class="bi bi-stars text-primary"></i>
+                Academic Environment
+            </h2>
+
+            <p class="about-subtitle">
+                Education includes classroom learning, practical
+                experience, independent study and personal growth.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-xl-3">
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#e4f8ed;color:#168653;">
+                        <i class="bi bi-easel2"></i>
+                    </div>
+
+                    <h3>📖 Classroom Learning</h3>
+
+                    <p>
+                        Develop subject knowledge through teaching,
+                        discussion, revision and asking questions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#fff0df;color:#bd6b16;">
+                        <i class="bi bi-tools"></i>
+                    </div>
+
+                    <h3>🔬 Practical Education</h3>
+
+                    <p>
+                        Understand concepts through experiments,
+                        demonstrations and hands-on activities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#f0e8ff;color:#8245a7;">
+                        <i class="bi bi-book-half"></i>
+                    </div>
+
+                    <h3>📚 Reading and Research</h3>
+
+                    <p>
+                        Build independent learning habits by using
+                        books, references and educational resources.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="about-card">
+                    <div class="about-icon"
+                         style="background:#e3f5ff;color:#176b87;">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <h3>🤝 Student Activities</h3>
+
+                    <p>
+                        Develop communication, cooperation and
+                        leadership through group participation.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- STUDENT DEVELOPMENT -->
+    <section class="about-section">
+        <div class="about-banner">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-5">
+                    <span class="badge text-bg-primary rounded-pill mb-3">
+                        Student Growth 🌱
+                    </span>
+
+                    <h2 class="about-heading">
+                        Learning Beyond the Classroom
+                    </h2>
+
+                    <p class="about-subtitle mb-0">
+                        College life gives students opportunities
+                        to improve their knowledge, build healthy
+                        habits and prepare for responsibilities
+                        in their future careers.
+                    </p>
+                </div>
+
+                <div class="col-lg-7">
+
+                    <div class="d-flex gap-3 mb-4">
+                        <div class="about-icon mb-0 flex-shrink-0"
+                             style="background:white;color:#176b87;">
+                            <i class="bi bi-chat-square-text"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="h6 fw-bold">Communication Skills</h3>
+                            <p class="about-subtitle mb-0">
+                                Express ideas clearly and listen
+                                respectfully to others.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-4">
+                        <div class="about-icon mb-0 flex-shrink-0"
+                             style="background:white;color:#168653;">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="h6 fw-bold">Critical Thinking</h3>
+                            <p class="about-subtitle mb-0">
+                                Examine information and evaluate
+                                different possible solutions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <div class="about-icon mb-0 flex-shrink-0"
+                             style="background:white;color:#8245a7;">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="h6 fw-bold">Discipline and Responsibility</h3>
+                            <p class="about-subtitle mb-0">
+                                Practise punctuality, consistency,
+                                teamwork and responsible behaviour.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CLOSING -->
+    <section class="about-section pb-3">
+        <div class="about-closing shadow-sm">
+            <i class="bi bi-mortarboard-fill"
+               style="font-size:3rem;color:#ffd166;"></i>
+
+            <h2 class="fw-bold mt-3">
+                Knowledge Today, Opportunities Tomorrow ✨
+            </h2>
+
+            <p>
+                Education is a continuous journey. With curiosity,
+                consistent effort and a willingness to learn,
+                students can develop their abilities, explore
+                new opportunities and contribute positively to society.
+            </p>
+
+            <a href="{{ url_for('home') }}"
+               class="btn btn-light mt-4"
+               style="border-radius:12px;font-weight:600;">
+                <i class="bi bi-house-door"></i>
+                Back to Home
+            </a>
+        </div>
+    </section>
+
+</div>
+
+
+<!-- DEPARTMENT SEARCH AND FILTER -->
+<script>
+(function () {
+    const searchInput = document.getElementById("departmentSearch");
+    const filterButtons = document.querySelectorAll(".about-filter");
+    const departmentItems = document.querySelectorAll(".department-item");
+    const noResults = document.getElementById("departmentNoResults");
+    const resetButton = document.getElementById("departmentReset");
+
+    if (!searchInput || !noResults || !resetButton) return;
+
+    let activeFilter = "all";
+
+    function filterDepartments() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        departmentItems.forEach(function (item) {
+            const name = item.dataset.name || "";
+
+            const matchesSearch = name.includes(query);
+
+            let matchesFilter = activeFilter === "all";
+
+            if (activeFilter === "computer") {
+                matchesFilter = name.includes("computer");
+            } else if (activeFilter === "electronics") {
+                matchesFilter = name.includes("electronics");
+            } else if (activeFilter === "mechanical") {
+                matchesFilter = name.includes("mechanical");
+            }
+
+            const show = matchesSearch && matchesFilter;
+
+            item.classList.toggle("about-hidden", !show);
+
+            if (show) visibleCount++;
+        });
+
+        noResults.style.display =
+            visibleCount === 0 ? "block" : "none";
+    }
+
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            activeFilter = button.dataset.filter;
+
+            filterButtons.forEach(function (item) {
+                const active = item === button;
+
+                item.classList.toggle("active", active);
+                item.setAttribute(
+                    "aria-pressed",
+                    active ? "true" : "false"
+                );
+            });
+
+            filterDepartments();
+        });
+    });
+
+    searchInput.addEventListener("input", filterDepartments);
+
+    resetButton.addEventListener("click", function () {
+        searchInput.value = "";
+        activeFilter = "all";
+
+        filterButtons.forEach(function (button) {
+            const active = button.dataset.filter === "all";
+
+            button.classList.toggle("active", active);
+            button.setAttribute(
+                "aria-pressed",
+                active ? "true" : "false"
+            );
+        });
+
+        filterDepartments();
+        searchInput.focus();
+    });
+})();
+</script>
+
+{% endblock %}

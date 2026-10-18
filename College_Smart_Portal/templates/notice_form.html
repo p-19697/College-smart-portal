@@ -1,0 +1,15 @@
+
+{% extends "base.html" %}
+{% block title %}Add Notice{% endblock %}
+{% block content %}
+<div class="card p-4 mx-auto" style="max-width:750px">
+    <h1 class="section-title">Publish a Notice</h1>
+    <form method="post">
+        <div class="mb-3"><label class="form-label">Notice Title *</label><input class="form-control" name="title" required></div>
+        <div class="mb-3"><label class="form-label">Details *</label><textarea class="form-control" name="details" rows="5" required></textarea></div>
+        <div class="mb-3"><label class="form-label">Notice Date</label><input class="form-control" type="date" name="notice_date"></div>
+        <button class="btn btn-primary">Publish Notice</button>
+        <a href="{{ url_for('notices') }}" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

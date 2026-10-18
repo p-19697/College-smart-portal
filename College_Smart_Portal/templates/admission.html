@@ -1,0 +1,944 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admission Information | College Smart Portal{% endblock %}
+
+{% block head %}
+<style>
+/* ===== Admission Page ===== */
+.admission-page {
+    --ad-primary: #2457c5;
+    --ad-dark: #172554;
+    --ad-muted: #64748b;
+    color: #24324a;
+    padding-bottom: 30px;
+}
+
+.admission-page .ad-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: 42px 36px;
+    color: white;
+    background: linear-gradient(125deg, #172554, #2457c5 62%, #547fe5);
+    box-shadow: 0 14px 35px rgba(36, 87, 197, .18);
+}
+
+.admission-page .ad-hero::after {
+    content: "🎓";
+    position: absolute;
+    right: 7%;
+    top: 12%;
+    font-size: clamp(65px, 10vw, 115px);
+    opacity: .17;
+    transform: rotate(-12deg);
+}
+
+.admission-page .hero-tag {
+    display: inline-block;
+    padding: 7px 13px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 50px;
+    background: rgba(255,255,255,.12);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.admission-page .ad-hero h1 {
+    font-size: clamp(29px, 4vw, 43px);
+    font-weight: 800;
+    letter-spacing: -.7px;
+    margin-bottom: 13px;
+}
+
+.admission-page .ad-hero p {
+    max-width: 620px;
+    color: #e5edff;
+    line-height: 1.8;
+}
+
+.admission-page .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.admission-page .hero-actions .btn {
+    border-radius: 10px;
+    padding: 11px 17px;
+    font-weight: 600;
+}
+
+.admission-page .section-heading {
+    font-weight: 800;
+    color: var(--ad-dark);
+    margin-bottom: 7px;
+}
+
+.admission-page .section-subtitle {
+    color: var(--ad-muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.admission-page .ad-card {
+    background: #fff;
+    border: 1px solid #e6ebf3;
+    border-radius: 17px;
+    padding: 23px;
+    height: 100%;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, .035);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.admission-page .ad-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
+}
+
+.admission-page .stat-icon,
+.admission-page .feature-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 23px;
+    background: #edf3ff;
+    margin-bottom: 15px;
+}
+
+.admission-page .stat-number {
+    color: var(--ad-dark);
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.admission-page .stat-label {
+    color: var(--ad-muted);
+    font-size: 13px;
+}
+
+.admission-page .process-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: admission-step;
+}
+
+.admission-page .process-item {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    padding: 0 0 25px;
+}
+
+.admission-page .process-item:last-child {
+    padding-bottom: 0;
+}
+
+.admission-page .process-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 43px;
+    bottom: 0;
+    width: 2px;
+    background: #dbe7ff;
+}
+
+.admission-page .step-number {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #eaf1ff;
+    color: var(--ad-primary);
+    font-weight: 800;
+}
+
+.admission-page .process-item h5 {
+    font-size: 15px;
+    font-weight: 750;
+    margin: 2px 0 6px;
+}
+
+.admission-page .process-item p {
+    color: var(--ad-muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+.admission-page .filter-panel {
+    padding: 17px;
+    background: #f8faff;
+    border: 1px solid #e6ebf3;
+    border-radius: 14px;
+}
+
+.admission-page .form-control,
+.admission-page .form-select {
+    min-height: 44px;
+    border-color: #dbe3ef;
+    border-radius: 10px;
+}
+
+.admission-page .form-control:focus,
+.admission-page .form-select:focus {
+    border-color: #7ea4f5;
+    box-shadow: 0 0 0 .2rem rgba(36, 87, 197, .1);
+}
+
+.admission-page .document-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.admission-page .document-item:last-child {
+    border-bottom: 0;
+}
+
+.admission-page .document-check {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    margin-top: 3px;
+    accent-color: var(--ad-primary);
+    cursor: pointer;
+}
+
+.admission-page .document-name {
+    font-size: 14px;
+    font-weight: 650;
+    color: #263650;
+    line-height: 1.6;
+}
+
+.admission-page .document-note {
+    display: block;
+    color: var(--ad-muted);
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.admission-page .document-item.is-checked .document-name {
+    color: #758196;
+    text-decoration: line-through;
+}
+
+.admission-page .progress {
+    height: 8px;
+    border-radius: 20px;
+    background: #e9eef7;
+}
+
+.admission-page .progress-bar {
+    background: linear-gradient(90deg, #2457c5, #6d91ed);
+    transition: width .2s ease;
+}
+
+.admission-page .notice-box {
+    border: 1px solid #f4df9a;
+    background: #fffbeb;
+    color: #784d08;
+    border-radius: 14px;
+    padding: 18px;
+    line-height: 1.75;
+    font-size: 13px;
+}
+
+.admission-page .info-box {
+    border: 1px solid #cde8fb;
+    background: #f0f9ff;
+    color: #164e75;
+    border-radius: 14px;
+    padding: 18px;
+    line-height: 1.75;
+    font-size: 13px;
+}
+
+.admission-page .accordion-item {
+    border: 1px solid #e6ebf3;
+    border-radius: 12px !important;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.admission-page .accordion-button {
+    padding: 17px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #24324a;
+    background: white;
+    box-shadow: none;
+}
+
+.admission-page .accordion-button:not(.collapsed) {
+    background: #f2f6ff;
+    color: var(--ad-primary);
+}
+
+.admission-page .accordion-body {
+    color: var(--ad-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.admission-page .document-empty {
+    display: none;
+    text-align: center;
+    padding: 22px 5px;
+    color: var(--ad-muted);
+}
+
+.admission-page .bottom-banner {
+    padding: 25px;
+    border-radius: 17px;
+    background: linear-gradient(120deg, #eff5ff, #f8faff);
+    border: 1px solid #dce7ff;
+}
+
+@media (max-width: 767px) {
+    .admission-page .ad-hero {
+        padding: 30px 22px;
+    }
+
+    .admission-page .ad-hero::after {
+        right: 4%;
+        top: 5%;
+        font-size: 65px;
+    }
+
+    .admission-page .ad-hero p {
+        max-width: 85%;
+    }
+
+    .admission-page .ad-card {
+        padding: 18px;
+    }
+}
+
+@media print {
+    .admission-page .hero-actions,
+    .admission-page .filter-panel,
+    .admission-page .no-print,
+    .admission-page .bottom-banner {
+        display: none !important;
+    }
+
+    .admission-page .ad-hero {
+        color: black;
+        background: white;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    .admission-page .ad-hero p {
+        color: #333;
+    }
+
+    .admission-page .ad-card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admission-page">
+
+    <!-- HERO -->
+    <section class="ad-hero mb-4">
+        <span class="hero-tag">🎓 STUDENT ADMISSION GUIDE</span>
+        <h1>Admission Information</h1>
+        <p>
+            Your journey towards a technical education starts here.
+            Explore the general admission process, prepare your documents
+            and keep track of your checklist in one place.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#admission-process" class="btn btn-light">
+                <i class="bi bi-signpost-split me-1"></i>
+                Admission Process
+            </a>
+            <a href="#document-checklist" class="btn btn-outline-light">
+                <i class="bi bi-card-checklist me-1"></i>
+                Document Checklist
+            </a>
+            <button type="button" class="btn btn-outline-light"
+                    onclick="window.print()">
+                <i class="bi bi-printer me-1"></i> Print Guide
+            </button>
+        </div>
+    </section>
+
+    <!-- QUICK STATS -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="ad-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-number">01</div>
+                <div class="stat-label">Check Eligibility</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="ad-card">
+                <div class="stat-icon">📄</div>
+                <div class="stat-number">02</div>
+                <div class="stat-label">Prepare Documents</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="ad-card">
+                <div class="stat-icon">💻</div>
+                <div class="stat-number">03</div>
+                <div class="stat-label">Apply Online</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="ad-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">04</div>
+                <div class="stat-label">Confirm Admission</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMISSION PROCESS -->
+    <section id="admission-process" class="mb-5">
+        <div class="mb-3">
+            <h2 class="section-heading">🛣️ General Admission Process</h2>
+            <p class="section-subtitle">
+                Follow these general steps and always refer to the current
+                official admission notification.
+            </p>
+        </div>
+
+        <div class="ad-card">
+            <ol class="process-list">
+                <li class="process-item">
+                    <div class="step-number">01</div>
+                    <div>
+                        <h5>📢 Read the Official Notification</h5>
+                        <p>
+                            Check the current admission schedule, important
+                            dates, instructions and available courses.
+                        </p>
+                    </div>
+                </li>
+
+                <li class="process-item">
+                    <div class="step-number">02</div>
+                    <div>
+                        <h5>🎯 Check Eligibility</h5>
+                        <p>
+                            Confirm the required qualifying examination,
+                            eligibility conditions and course requirements.
+                        </p>
+                    </div>
+                </li>
+
+                <li class="process-item">
+                    <div class="step-number">03</div>
+                    <div>
+                        <h5>💻 Complete the Application</h5>
+                        <p>
+                            Fill in the application form carefully and
+                            provide accurate personal and academic details.
+                        </p>
+                    </div>
+                </li>
+
+                <li class="process-item">
+                    <div class="step-number">04</div>
+                    <div>
+                        <h5>📂 Prepare and Submit Documents</h5>
+                        <p>
+                            Keep the required original documents and
+                            accepted copies or scanned files ready.
+                        </p>
+                    </div>
+                </li>
+
+                <li class="process-item">
+                    <div class="step-number">05</div>
+                    <div>
+                        <h5>📋 Follow Merit and Allotment Updates</h5>
+                        <p>
+                            Where applicable, check merit lists, option
+                            forms, seat allotment and reporting instructions.
+                        </p>
+                    </div>
+                </li>
+
+                <li class="process-item">
+                    <div class="step-number">06</div>
+                    <div>
+                        <h5>🏫 Complete Admission Confirmation</h5>
+                        <p>
+                            Complete verification, required fee payment and
+                            reporting within the official deadline.
+                        </p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- DOCUMENT CHECKLIST -->
+    <section id="document-checklist" class="mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+            <div>
+                <h2 class="section-heading">📑 Document Checklist</h2>
+                <p class="section-subtitle mb-0">
+                    Tick each item as you prepare it. Requirements depend
+                    on the admission route and your circumstances.
+                </p>
+            </div>
+            <button type="button" id="resetChecklist"
+                    class="btn btn-sm btn-outline-secondary no-print">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>
+                Reset Checklist
+            </button>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="ad-card">
+                    <div class="filter-panel mb-3">
+                        <label for="documentSearch" class="form-label fw-semibold">
+                            🔎 Find a document
+                        </label>
+                        <input type="search" id="documentSearch"
+                               class="form-control"
+                               placeholder="Search marksheet, caste certificate...">
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <button class="btn btn-sm btn-primary filter-btn"
+                                    data-filter="all" type="button">All</button>
+                            <button class="btn btn-sm btn-outline-primary filter-btn"
+                                    data-filter="pending" type="button">Pending</button>
+                            <button class="btn btn-sm btn-outline-primary filter-btn"
+                                    data-filter="done" type="button">Prepared</button>
+                        </div>
+                    </div>
+
+                    <div id="documentList">
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📘 Previous qualifying examination marksheet</span>
+                                <span class="document-note">Keep the applicable examination result ready.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">🏫 School Leaving Certificate (LC)</span>
+                                <span class="document-note">If required by the admission authority.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">🪪 Identity document</span>
+                                <span class="document-note">Aadhaar or another accepted ID, if requested.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📍 Domicile / Nationality / Residence documents</span>
+                                <span class="document-note">Submit the documents specified for your admission route.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📸 Passport-size photographs</span>
+                                <span class="document-note">Follow the photo format and size requirements.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">💰 Income Certificate</span>
+                                <span class="document-note">If required for a category, fee concession or scheme.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📜 Caste Certificate</span>
+                                <span class="document-note">If applicable to your category and admission process.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">🗂️ Caste Validity Certificate</span>
+                                <span class="document-note">Only where required by the applicable rules.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📃 Non-Creamy Layer Certificate</span>
+                                <span class="document-note">Where applicable to the category or benefit.</span>
+                            </span>
+                        </label>
+
+                        <label class="document-item">
+                            <input class="document-check" type="checkbox">
+                            <span>
+                                <span class="document-name">📁 Other documents in the official brochure</span>
+                                <span class="document-note">Check the latest official instructions for additional requirements.</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div id="noDocuments" class="document-empty">
+                        <div style="font-size: 32px;">🔍</div>
+                        No matching documents found.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="ad-card mb-4">
+                    <div class="feature-icon">📊</div>
+                    <h5 class="fw-bold">Your Preparation Progress</h5>
+                    <p class="section-subtitle">
+                        Track how many checklist items you have prepared.
+                    </p>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small fw-semibold">Completed</span>
+                        <span class="small fw-bold" id="progressText">0 of 10</span>
+                    </div>
+
+                    <div class="progress mb-3" role="progressbar"
+                         aria-label="Document checklist progress"
+                         aria-valuemin="0" aria-valuemax="100"
+                         aria-valuenow="0" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"
+                             style="width: 0%"></div>
+                    </div>
+
+                    <p class="small text-muted mb-0" id="progressMessage">
+                        Start ticking the documents you have prepared.
+                    </p>
+                </div>
+
+                <div class="notice-box mb-3">
+                    <h6 class="fw-bold">⚠️ Important Reminder</h6>
+                    This checklist is for planning only. It is not an official
+                    document list. Do not assume every document is compulsory
+                    for every applicant.
+                </div>
+
+                <div class="info-box">
+                    <h6 class="fw-bold">💡 Keep Documents Safe</h6>
+                    Verify names, dates and other details before submitting.
+                    Keep originals safe and use copies or uploads in the
+                    format specified by the authority.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORY CARDS -->
+    <section class="mb-5">
+        <div class="mb-3">
+            <h2 class="section-heading">🧭 What Should You Check?</h2>
+            <p class="section-subtitle">
+                Review these important areas before submitting your application.
+            </p>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6 col-xl-3">
+                <div class="ad-card">
+                    <div class="feature-icon">🎯</div>
+                    <h5 class="fw-bold">Eligibility</h5>
+                    <p class="section-subtitle mb-0">
+                        Confirm educational qualifications, course criteria
+                        and any applicable conditions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="ad-card">
+                    <div class="feature-icon">📅</div>
+                    <h5 class="fw-bold">Important Dates</h5>
+                    <p class="section-subtitle mb-0">
+                        Check application deadlines, verification dates,
+                        merit lists and reporting schedules.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="ad-card">
+                    <div class="feature-icon">💳</div>
+                    <h5 class="fw-bold">Fees and Schemes</h5>
+                    <p class="section-subtitle mb-0">
+                        Verify applicable fees, concessions and scholarship
+                        requirements through official sources.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="ad-card">
+                    <div class="feature-icon">🏢</div>
+                    <h5 class="fw-bold">College Office</h5>
+                    <p class="section-subtitle mb-0">
+                        Contact the college office if instructions or
+                        document requirements are unclear.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mb-5">
+        <div class="mb-3">
+            <h2 class="section-heading">❓ Frequently Asked Questions</h2>
+            <p class="section-subtitle">
+                Quick answers to common admission-related questions.
+            </p>
+        </div>
+
+        <div class="accordion" id="admissionFAQ">
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqOne"
+                            aria-expanded="true" aria-controls="faqOne">
+                        📄 Are all listed documents compulsory?
+                    </button>
+                </h3>
+                <div id="faqOne" class="accordion-collapse collapse show"
+                     data-bs-parent="#admissionFAQ">
+                    <div class="accordion-body">
+                        No. Requirements vary by course, admission route,
+                        category and applicable benefits. Check the latest
+                        official brochure for your specific case.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqTwo"
+                            aria-expanded="false" aria-controls="faqTwo">
+                        📅 Where can I check the last date?
+                    </button>
+                </h3>
+                <div id="faqTwo" class="accordion-collapse collapse"
+                     data-bs-parent="#admissionFAQ">
+                    <div class="accordion-body">
+                        Check the current official Maharashtra admission
+                        authority notification and confirm the schedule
+                        with the college office. Do not rely on old dates.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqThree"
+                            aria-expanded="false" aria-controls="faqThree">
+                        🗂️ Should I keep original documents?
+                    </button>
+                </h3>
+                <div id="faqThree" class="accordion-collapse collapse"
+                     data-bs-parent="#admissionFAQ">
+                    <div class="accordion-body">
+                        Keep your original documents safe. Follow the
+                        authority's instructions about original verification,
+                        photocopies and digital uploads.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqFour"
+                            aria-expanded="false" aria-controls="faqFour">
+                        🏫 What if I have a question about my documents?
+                    </button>
+                </h3>
+                <div id="faqFour" class="accordion-collapse collapse"
+                     data-bs-parent="#admissionFAQ">
+                    <div class="accordion-body">
+                        Contact the admission helpdesk or college office
+                        and ask which documents apply to your admission
+                        category and circumstances.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFFICIAL NOTICE -->
+    <section class="bottom-banner">
+        <div class="d-flex align-items-start gap-3">
+            <div style="font-size: 30px;">📢</div>
+            <div>
+                <h5 class="fw-bold mb-2">Verify Before You Apply</h5>
+                <p class="section-subtitle mb-0">
+                    This page provides general educational guidance only.
+                    Admission rules, eligibility, dates, fees and document
+                    requirements can change. Always follow the latest
+                    official Maharashtra admission authority notification
+                    and instructions from your college office.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const documentList = document.getElementById("documentList");
+    if (!documentList) return;
+
+    const checkboxes = Array.from(
+        documentList.querySelectorAll(".document-check")
+    );
+    const searchInput = document.getElementById("documentSearch");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressMessage = document.getElementById("progressMessage");
+    const progressContainer = document.getElementById("progressContainer");
+    const noDocuments = document.getElementById("noDocuments");
+    let activeFilter = "all";
+
+    function updateProgress() {
+        const completed = checkboxes.filter(cb => cb.checked).length;
+        const total = checkboxes.length;
+        const percent = total ? Math.round((completed / total) * 100) : 0;
+
+        progressBar.style.width = percent + "%";
+        progressText.textContent = completed + " of " + total;
+        progressContainer.setAttribute("aria-valuenow", percent);
+
+        if (completed === total) {
+            progressMessage.textContent = "🎉 All checklist items are ticked!";
+        } else if (completed > 0) {
+            progressMessage.textContent =
+                "Great progress! " + (total - completed) +
+                " checklist items remain.";
+        } else {
+            progressMessage.textContent =
+                "Start ticking the documents you have prepared.";
+        }
+
+        checkboxes.forEach(cb => {
+            cb.closest(".document-item").classList.toggle(
+                "is-checked", cb.checked
+            );
+        });
+
+        filterDocuments();
+    }
+
+    function filterDocuments() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        checkboxes.forEach(cb => {
+            const item = cb.closest(".document-item");
+            const text = item.innerText.toLowerCase();
+            const matchesSearch = text.includes(query);
+            const matchesFilter =
+                activeFilter === "all" ||
+                (activeFilter === "done" && cb.checked) ||
+                (activeFilter === "pending" && !cb.checked);
+
+            const visible = matchesSearch && matchesFilter;
+            item.style.display = visible ? "flex" : "none";
+
+            if (visible) visibleCount++;
+        });
+
+        noDocuments.style.display = visibleCount ? "none" : "block";
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener("change", updateProgress);
+    });
+
+    searchInput.addEventListener("input", filterDocuments);
+
+    filterButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            activeFilter = this.dataset.filter;
+
+            filterButtons.forEach(btn => {
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-outline-primary");
+            });
+
+            this.classList.add("btn-primary");
+            this.classList.remove("btn-outline-primary");
+
+            filterDocuments();
+        });
+    });
+
+    document.getElementById("resetChecklist").addEventListener("click", function () {
+        checkboxes.forEach(cb => cb.checked = false);
+        searchInput.value = "";
+        activeFilter = "all";
+
+        filterButtons.forEach(btn => {
+            const isAll = btn.dataset.filter === "all";
+            btn.classList.toggle("btn-primary", isAll);
+            btn.classList.toggle("btn-outline-primary", !isAll);
+        });
+
+        updateProgress();
+    });
+
+    updateProgress();
+});
+</script>
+{% endblock %}

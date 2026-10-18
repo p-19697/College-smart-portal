@@ -1,0 +1,505 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Login | College Smart Portal{% endblock %}
+
+{% block head %}
+<style>
+.admin-login-page {
+    --login-primary: #4f46e5;
+    --login-dark: #20294b;
+    --login-muted: #748096;
+    padding: 18px 0 35px;
+}
+
+.admin-login-page .login-wrapper {
+    max-width: 1020px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e8ebf4;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(31, 41, 75, .09);
+}
+
+.admin-login-page .login-visual {
+    min-height: 570px;
+    height: 100%;
+    padding: 38px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #fff;
+    background: linear-gradient(145deg, #25205f, #4f46e5 65%, #818cf8);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-login-page .login-visual::before,
+.admin-login-page .login-visual::after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.admin-login-page .login-visual::before {
+    width: 280px;
+    height: 280px;
+    right: -110px;
+    top: 70px;
+}
+
+.admin-login-page .login-visual::after {
+    width: 190px;
+    height: 190px;
+    right: -60px;
+    top: 115px;
+}
+
+.admin-login-page .visual-content,
+.admin-login-page .visual-footer,
+.admin-login-page .visual-brand {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-login-page .visual-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-login-page .brand-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 14px;
+    font-size: 24px;
+}
+
+.admin-login-page .brand-name {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.admin-login-page .brand-subtitle {
+    font-size: 11px;
+    color: #dedfff;
+}
+
+.admin-login-page .visual-content {
+    margin: 55px 0;
+}
+
+.admin-login-page .visual-content .visual-emoji {
+    font-size: 56px;
+    margin-bottom: 22px;
+}
+
+.admin-login-page .visual-content h2 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.admin-login-page .visual-content p {
+    color: #e4e5ff;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.admin-login-page .visual-feature {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 18px;
+    color: #f1f1ff;
+    font-size: 13px;
+}
+
+.admin-login-page .visual-feature i {
+    font-size: 19px;
+}
+
+.admin-login-page .visual-footer {
+    font-size: 11px;
+    color: #dcdcff;
+}
+
+.admin-login-page .login-form-panel {
+    padding: 42px 38px;
+}
+
+.admin-login-page .login-heading {
+    font-size: 29px;
+    font-weight: 850;
+    color: var(--login-dark);
+    margin-bottom: 9px;
+}
+
+.admin-login-page .login-description {
+    color: var(--login-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.admin-login-page .form-label {
+    font-size: 13px;
+    font-weight: 750;
+    color: #34415a;
+    margin-bottom: 8px;
+}
+
+.admin-login-page .form-control {
+    min-height: 48px;
+    border-radius: 11px;
+    border-color: #dce2ee;
+    font-size: 14px;
+}
+
+.admin-login-page .form-control:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 .2rem rgba(79,70,229,.1);
+}
+
+.admin-login-page .input-group-text {
+    min-width: 45px;
+    justify-content: center;
+    border-color: #dce2ee;
+    border-radius: 11px 0 0 11px;
+    background: #f8f9ff;
+    color: #6875a0;
+}
+
+.admin-login-page .input-group .form-control {
+    border-radius: 0;
+}
+
+.admin-login-page .input-group .password-toggle {
+    border: 1px solid #dce2ee;
+    border-left: 0;
+    border-radius: 0 11px 11px 0;
+    background: #fff;
+    color: #6875a0;
+    min-width: 45px;
+}
+
+.admin-login-page .login-btn {
+    min-height: 49px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 750;
+    background: linear-gradient(100deg, #4f46e5, #6d63ed);
+    transition: .2s;
+}
+
+.admin-login-page .login-btn:hover {
+    background: #3730a3;
+    transform: translateY(-1px);
+}
+
+.admin-login-page .security-box {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    padding: 14px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    color: #166534;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.admin-login-page .security-box i {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.admin-login-page .login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #9aa3b4;
+    font-size: 11px;
+    margin: 22px 0;
+}
+
+.admin-login-page .login-divider::before,
+.admin-login-page .login-divider::after {
+    content: "";
+    height: 1px;
+    background: #e9edf4;
+    flex: 1;
+}
+
+.admin-login-page .helper-text {
+    color: var(--login-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+@media(max-width:767px) {
+    .admin-login-page .login-visual {
+        min-height: auto;
+        padding: 27px 24px;
+    }
+
+    .admin-login-page .visual-content {
+        margin: 30px 0 22px;
+    }
+
+    .admin-login-page .visual-content h2 {
+        font-size: 25px;
+    }
+
+    .admin-login-page .visual-content .visual-emoji {
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
+
+    .admin-login-page .login-form-panel {
+        padding: 29px 23px;
+    }
+
+    .admin-login-page .login-heading {
+        font-size: 25px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-login-page">
+
+    <div class="login-wrapper">
+        <div class="row g-0">
+
+            <!-- LEFT PANEL -->
+            <div class="col-md-5">
+                <div class="login-visual">
+
+                    <div class="visual-brand">
+                        <div class="brand-icon">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <div>
+                            <div class="brand-name">College Smart Portal</div>
+                            <div class="brand-subtitle">Academic Management System</div>
+                        </div>
+                    </div>
+
+                    <div class="visual-content">
+                        <div class="visual-emoji">👋</div>
+                        <h2>Welcome Back, Administrator!</h2>
+                        <p>
+                            Sign in to manage student records, academic projects,
+                            college notices and portal information from one place.
+                        </p>
+
+                        <div class="visual-feature">
+                            <i class="bi bi-shield-lock-fill"></i>
+                            <span>Secure administrator access</span>
+                        </div>
+
+                        <div class="visual-feature">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage student information</span>
+                        </div>
+
+                        <div class="visual-feature">
+                            <i class="bi bi-clipboard-check-fill"></i>
+                            <span>Organize projects and notices</span>
+                        </div>
+                    </div>
+
+                    <div class="visual-footer">
+                        <i class="bi bi-stars me-1"></i>
+                        Smart tools for better college management.
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="col-md-7">
+                <div class="login-form-panel">
+
+                    <div class="mb-4">
+                        <div class="login-heading">
+                            Administrator Login 🔐
+                        </div>
+                        <p class="login-description mb-0">
+                            Enter your administrator credentials to continue
+                            to the management portal.
+                        </p>
+                    </div>
+
+                    <form method="post" id="adminLoginForm">
+
+                        <!-- Username -->
+                        <div class="mb-4">
+                            <label for="username" class="form-label">
+                                <i class="bi bi-person-badge me-1"></i>
+                                Username
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+
+                                <input type="text"
+                                       id="username"
+                                       class="form-control"
+                                       name="username"
+                                       placeholder="Enter admin username"
+                                       autocomplete="username"
+                                       required
+                                       maxlength="100">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-key me-1"></i>
+                                Password
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+
+                                <input type="password"
+                                       id="password"
+                                       class="form-control"
+                                       name="password"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password"
+                                       required>
+
+                                <button class="btn password-toggle"
+                                        type="button"
+                                        id="togglePassword"
+                                        aria-label="Show password"
+                                        aria-pressed="false">
+                                    <i class="bi bi-eye" id="passwordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember username only in current page -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="showUsername">
+                                <label class="form-check-label helper-text"
+                                       for="showUsername">
+                                    Show username
+                                </label>
+                            </div>
+
+                            <span class="helper-text">
+                                <i class="bi bi-shield-check"></i>
+                                Protected access
+                            </span>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary login-btn text-white w-100"
+                                id="loginButton">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Sign In to Dashboard
+                        </button>
+
+                    </form>
+
+                    <div class="login-divider">ADMIN ACCESS</div>
+
+                    <div class="security-box">
+                        <i class="bi bi-shield-check"></i>
+                        <div>
+                            <strong>Security Reminder</strong><br>
+                            Use only your authorized administrator account.
+                            Never share your password with others.
+                        </div>
+                    </div>
+
+                    <p class="helper-text text-center mt-4 mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Login credentials are configured by the portal administrator.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordIcon = document.getElementById("passwordIcon");
+    const usernameInput = document.getElementById("username");
+    const showUsername = document.getElementById("showUsername");
+    const loginForm = document.getElementById("adminLoginForm");
+    const loginButton = document.getElementById("loginButton");
+
+    // Show or hide password
+    togglePassword.addEventListener("click", function () {
+        const isHidden = passwordInput.type === "password";
+
+        passwordInput.type = isHidden ? "text" : "password";
+        passwordIcon.className = isHidden
+            ? "bi bi-eye-slash"
+            : "bi bi-eye";
+
+        togglePassword.setAttribute(
+            "aria-label",
+            isHidden ? "Hide password" : "Show password"
+        );
+
+        togglePassword.setAttribute(
+            "aria-pressed",
+            isHidden ? "true" : "false"
+        );
+    });
+
+    // Show or hide username on screen
+    showUsername.addEventListener("change", function () {
+        usernameInput.type = this.checked ? "text" : "text";
+
+        if (this.checked) {
+            usernameInput.focus();
+        }
+    });
+
+    // Prevent repeated clicks during form submission
+    loginForm.addEventListener("submit", function () {
+        if (!loginForm.checkValidity()) return;
+
+        loginButton.disabled = true;
+        loginButton.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2" ' +
+            'aria-hidden="true"></span>Signing In...';
+    });
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,965 @@
+
+{% extends "base.html" %}
+
+{% block title %}College Notices | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<div class="notices-page">
+
+    <!-- Hero Section -->
+    <section class="notice-hero mb-4">
+        <div class="notice-hero-content">
+            <span class="notice-hero-badge">
+                <i class="bi bi-megaphone-fill"></i>
+                Campus Updates & Announcements
+            </span>
+
+            <h1>College <span>Notices</span> 📢</h1>
+
+            <p>
+                Stay informed about college announcements, examinations,
+                scholarships, events and important academic updates.
+            </p>
+
+            <a href="#notice-directory" class="btn btn-light notice-hero-btn">
+                <i class="bi bi-bell-fill"></i> Explore Notices
+            </a>
+        </div>
+
+        <div class="notice-hero-decoration">
+            <i class="bi bi-bell-fill"></i>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-6 col-lg-4">
+            <div class="notice-stat-card">
+                <div class="notice-stat-icon notice-purple">
+                    <i class="bi bi-megaphone-fill"></i>
+                </div>
+                <div>
+                    <h3 id="totalNotices">{{ notices|length }}</h3>
+                    <p>Total Notices</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <div class="notice-stat-card">
+                <div class="notice-stat-icon notice-blue">
+                    <i class="bi bi-calendar-event-fill"></i>
+                </div>
+                <div>
+                    <h3 id="datedNotices">0</h3>
+                    <p>Notices With Dates</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="notice-stat-card">
+                <div class="notice-stat-icon notice-orange">
+                    <i class="bi bi-eye-fill"></i>
+                </div>
+                <div>
+                    <h3 id="visibleNotices">{{ notices|length }}</h3>
+                    <p>Notices Displayed</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notice Directory -->
+    <section class="notice-directory" id="notice-directory">
+
+        <div class="notice-section-heading">
+            <div>
+                <span class="notice-section-label">LATEST UPDATES</span>
+                <h2><i class="bi bi-journal-text"></i> Notice Board</h2>
+                <p>Find important announcements quickly and easily.</p>
+            </div>
+
+            {% if session.get('admin_logged_in') %}
+            <a href="{{ url_for('add_notice') }}"
+               class="btn btn-primary add-notice-btn">
+                <i class="bi bi-plus-circle-fill"></i> Add Notice
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="notice-filter-panel">
+            <div class="row g-3">
+
+                <div class="col-12 col-lg-5">
+                    <label for="noticeSearch" class="form-label">
+                        🔎 Search Notices
+                    </label>
+
+                    <div class="notice-search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text"
+                               id="noticeSearch"
+                               class="form-control"
+                               placeholder="Search notice title or details...">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label for="noticeCategory" class="form-label">
+                        📌 Notice Category
+                    </label>
+
+                    <select id="noticeCategory" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="exam">📝 Examination</option>
+                        <option value="scholarship">🎓 Scholarship</option>
+                        <option value="event">🎉 Events</option>
+                        <option value="placement">💼 Placement</option>
+                        <option value="holiday">🏖️ Holiday</option>
+                        <option value="other">📢 Other Notices</option>
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label for="noticeDateFilter" class="form-label">
+                        📅 Filter by Date
+                    </label>
+
+                    <select id="noticeDateFilter" class="form-select">
+                        <option value="">All Dates</option>
+                        <option value="dated">Notices with a date</option>
+                        <option value="undated">Notices without a date</option>
+                        <option value="recent">Last 30 Days</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="notice-filter-footer">
+                <span id="noticeResultCount">
+                    Showing {{ notices|length }} notices
+                </span>
+
+                <button type="button"
+                        id="resetNoticeFilters"
+                        class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Notice Cards -->
+        <div class="p-3 p-md-4">
+            <div class="row g-3" id="noticeCards">
+
+                {% for n in notices %}
+                <div class="col-12 notice-item"
+                     data-title="{{ n.title|lower }}"
+                     data-details="{{ n.details|lower }}"
+                     data-date="{{ n.notice_date or '' }}"
+                     data-category="{% set text = (n.title ~ ' ' ~ n.details)|lower %}{% if 'exam' in text or 'semester' in text %}exam{% elif 'scholarship' in text %}scholarship{% elif 'placement' in text or 'job' in text or 'recruitment' in text %}placement{% elif 'event' in text or 'exhibition' in text or 'visit' in text or 'competition' in text or 'registration' in text %}event{% elif 'holiday' in text or 'closed' in text %}holiday{% else %}other{% endif %}">
+
+                    <div class="notice-card">
+
+                        <div class="notice-card-top">
+                            <div class="notice-card-icon">
+                                <i class="bi bi-bell-fill"></i>
+                            </div>
+
+                            <span class="notice-category-badge">
+                                <i class="bi bi-bookmark-fill"></i>
+                                {% if 'exam' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'semester' in (n.title ~ ' ' ~ n.details)|lower %}
+                                    Examination
+                                {% elif 'scholarship' in (n.title ~ ' ' ~ n.details)|lower %}
+                                    Scholarship
+                                {% elif 'placement' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'job' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'recruitment' in (n.title ~ ' ' ~ n.details)|lower %}
+                                    Placement
+                                {% elif 'event' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'exhibition' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'visit' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'competition' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'registration' in (n.title ~ ' ' ~ n.details)|lower %}
+                                    Event
+                                {% elif 'holiday' in (n.title ~ ' ' ~ n.details)|lower
+                                      or 'closed' in (n.title ~ ' ' ~ n.details)|lower %}
+                                    Holiday
+                                {% else %}
+                                    General
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <h4 class="notice-title">{{ n.title }}</h4>
+
+                        <p class="notice-details">{{ n.details }}</p>
+
+                        <div class="notice-date-row">
+                            <span class="notice-date-icon">
+                                <i class="bi bi-calendar3"></i>
+                            </span>
+
+                            <div>
+                                <small>Notice Date</small>
+                                <strong>
+                                    {{ n.notice_date or 'Not specified' }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="notice-card-footer">
+                            <span>
+                                <i class="bi bi-info-circle-fill"></i>
+                                College Announcement
+                            </span>
+
+                            {% if session.get('admin_logged_in') %}
+                            <form method="post"
+                                  action="{{ url_for('delete_notice', notice_id=n.id) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this notice?');">
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash3-fill"></i> Delete
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+                {% else %}
+                <div class="col-12" id="emptyNotices">
+                    <div class="notice-empty-state">
+                        <i class="bi bi-megaphone"></i>
+                        <h4>No Notices Available</h4>
+                        <p>New announcements will appear here when added.</p>
+
+                        {% if session.get('admin_logged_in') %}
+                        <a href="{{ url_for('add_notice') }}"
+                           class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Add First Notice
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="col-12" id="noNoticeResults" style="display:none;">
+                    <div class="notice-empty-state">
+                        <i class="bi bi-search"></i>
+                        <h4>No Matching Notices</h4>
+                        <p>Try a different search term or reset the filters.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="notice-information">
+            <i class="bi bi-shield-check"></i>
+            Always confirm examination schedules, scholarship deadlines
+            and event details with the official college notice board.
+        </div>
+
+    </section>
+
+    <!-- Helpful Information -->
+    <section class="notice-help-section mt-4">
+
+        <div class="notice-section-heading help-heading">
+            <div>
+                <span class="notice-section-label">STAY INFORMED</span>
+                <h2>Never Miss an Update ✨</h2>
+                <p>Make checking college announcements part of your daily routine.</p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-12 col-md-4">
+                <div class="notice-help-card">
+                    <div class="notice-help-icon help-purple">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </div>
+                    <h5>📝 Check Deadlines</h5>
+                    <p>Keep track of examination forms, scholarship applications and submissions.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="notice-help-card">
+                    <div class="notice-help-icon help-blue">
+                        <i class="bi bi-bell-fill"></i>
+                    </div>
+                    <h5>📢 Check Regularly</h5>
+                    <p>Review new announcements to stay updated about college activities.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="notice-help-card">
+                    <div class="notice-help-icon help-orange">
+                        <i class="bi bi-patch-check-fill"></i>
+                    </div>
+                    <h5>✅ Verify Information</h5>
+                    <p>Confirm important dates and instructions through official college sources.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<style>
+.notices-page {
+    --notice-primary: #5b4bdb;
+    --notice-dark: #20294b;
+    --notice-muted: #748096;
+    padding-bottom: 25px;
+}
+
+/* Hero */
+.notice-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 42px;
+    border-radius: 24px;
+    color: white;
+    background: linear-gradient(120deg, #173b68, #237fb0 65%, #48a9c8);
+    box-shadow: 0 12px 35px rgba(25, 91, 143, .18);
+}
+
+.notice-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.notice-hero-badge {
+    display: inline-block;
+    padding: 8px 13px;
+    margin-bottom: 17px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 30px;
+    background: rgba(255,255,255,.13);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.notice-hero h1 {
+    margin-bottom: 13px;
+    font-size: clamp(30px, 4vw, 43px);
+    font-weight: 800;
+}
+
+.notice-hero h1 span {
+    color: #ffe29a;
+}
+
+.notice-hero p {
+    max-width: 550px;
+    color: #edf7ff;
+    line-height: 1.8;
+}
+
+.notice-hero-btn {
+    margin-top: 12px;
+    padding: 11px 18px;
+    border-radius: 10px;
+    color: #185786;
+    font-weight: 700;
+    transition: .25s;
+}
+
+.notice-hero-btn:hover {
+    color: #12345a;
+    transform: translateY(-3px);
+}
+
+.notice-hero-decoration {
+    position: absolute;
+    top: 12%;
+    right: 7%;
+    color: rgba(255,255,255,.13);
+    font-size: clamp(110px, 18vw, 205px);
+    transform: rotate(-12deg);
+}
+
+/* Statistics */
+.notice-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    padding: 20px;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(35,45,90,.045);
+    transition: .25s;
+}
+
+.notice-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(35,45,90,.09);
+}
+
+.notice-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 51px;
+    height: 51px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    font-size: 22px;
+}
+
+.notice-purple {
+    background: #efebff;
+    color: #6651db;
+}
+
+.notice-blue {
+    background: #e5f2ff;
+    color: #2675c7;
+}
+
+.notice-orange {
+    background: #fff0df;
+    color: #d77a1d;
+}
+
+.notice-stat-card h3 {
+    margin: 0;
+    color: var(--notice-dark);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.notice-stat-card p {
+    margin: 4px 0 0;
+    color: var(--notice-muted);
+    font-size: 13px;
+}
+
+/* Directory and headings */
+.notice-directory {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 20px;
+    box-shadow: 0 7px 28px rgba(35,45,90,.05);
+}
+
+.notice-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 25px 27px;
+}
+
+.notice-section-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #287bb1;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.notice-section-heading h2 {
+    margin: 0 0 8px;
+    color: var(--notice-dark);
+    font-size: clamp(21px, 3vw, 27px);
+    font-weight: 800;
+}
+
+.notice-section-heading h2 i {
+    color: #287bb1;
+}
+
+.notice-section-heading p {
+    margin: 0;
+    color: var(--notice-muted);
+    font-size: 14px;
+}
+
+.add-notice-btn {
+    flex-shrink: 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    background: #1769aa;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.add-notice-btn:hover {
+    background: #10558c;
+}
+
+/* Filters */
+.notice-filter-panel {
+    padding: 22px 27px;
+    background: #f7faff;
+    border-top: 1px solid #edf0f7;
+    border-bottom: 1px solid #edf0f7;
+}
+
+.notice-filter-panel .form-label {
+    color: #36415d;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.notice-filter-panel .form-control,
+.notice-filter-panel .form-select {
+    min-height: 45px;
+    border: 1px solid #e0e4f0;
+    border-radius: 10px;
+    font-size: 13px;
+    box-shadow: none;
+}
+
+.notice-filter-panel .form-control:focus,
+.notice-filter-panel .form-select:focus {
+    border-color: #80b9e8;
+    box-shadow: 0 0 0 3px rgba(40,123,177,.1);
+}
+
+.notice-search-box {
+    position: relative;
+}
+
+.notice-search-box > i {
+    position: absolute;
+    z-index: 1;
+    top: 14px;
+    left: 13px;
+    color: #858ba1;
+}
+
+.notice-search-box input {
+    padding-left: 38px;
+}
+
+.notice-filter-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    color: #6d7690;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.notice-filter-footer .btn {
+    border-radius: 8px;
+}
+
+/* Notice Cards */
+.notice-card {
+    height: 100%;
+    padding: 23px;
+    background: white;
+    border: 1px solid #e9edf5;
+    border-left: 4px solid #368cc0;
+    border-radius: 16px;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+
+.notice-card:hover {
+    transform: translateY(-4px);
+    border-color: #c8e2f4;
+    box-shadow: 0 12px 27px rgba(35,75,110,.09);
+}
+
+.notice-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 19px;
+}
+
+.notice-card-icon {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: #e7f4ff;
+    color: #267bb4;
+    font-size: 21px;
+}
+
+.notice-category-badge {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #eaf4ff;
+    color: #2867a8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.notice-title {
+    margin-bottom: 11px;
+    color: #303954;
+    font-size: 19px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.notice-details {
+    min-height: 45px;
+    margin-bottom: 20px;
+    color: #727c93;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.notice-date-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-top: 1px solid #f0f1f7;
+}
+
+.notice-date-icon {
+    display: grid;
+    place-items: center;
+    width: 37px;
+    height: 37px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #fff2e4;
+    color: #d77a1d;
+    font-size: 17px;
+}
+
+.notice-date-row small {
+    display: block;
+    margin-bottom: 3px;
+    color: #8a92a5;
+    font-size: 11px;
+}
+
+.notice-date-row strong {
+    color: #35405b;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.notice-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f1f7;
+}
+
+.notice-card-footer > span {
+    color: #718096;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.notice-card-footer > span i {
+    margin-right: 4px;
+    color: #287bb1;
+}
+
+.notice-card-footer .btn {
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.notice-empty-state {
+    padding: 45px 15px;
+    text-align: center;
+    background: #f9fbff;
+    border: 1px dashed #d7e5f1;
+    border-radius: 15px;
+}
+
+.notice-empty-state > i {
+    display: block;
+    margin-bottom: 14px;
+    color: #7bb3d8;
+    font-size: 42px;
+}
+
+.notice-empty-state h4 {
+    color: #303954;
+    font-weight: 800;
+}
+
+.notice-empty-state p {
+    margin-bottom: 15px;
+    color: #788198;
+    font-size: 13px;
+}
+
+.notice-information {
+    padding: 14px 20px;
+    background: #f8fbff;
+    border-top: 1px solid #edf0f7;
+    color: #737d95;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.notice-information i {
+    margin-right: 5px;
+    color: #287bb1;
+}
+
+/* Helpful information */
+.help-heading {
+    padding: 24px 3px 18px;
+}
+
+.notice-help-card {
+    height: 100%;
+    padding: 22px;
+    background: white;
+    border: 1px solid #edf0f7;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(35,45,90,.04);
+    transition: transform .25s, box-shadow .25s;
+}
+
+.notice-help-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 27px rgba(35,45,90,.09);
+}
+
+.notice-help-icon {
+    display: grid;
+    place-items: center;
+    width: 47px;
+    height: 47px;
+    margin-bottom: 17px;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.help-purple {
+    background: #efebff;
+    color: #6651db;
+}
+
+.help-blue {
+    background: #e5f2ff;
+    color: #2675c7;
+}
+
+.help-orange {
+    background: #fff0df;
+    color: #d77a1d;
+}
+
+.notice-help-card h5 {
+    margin-bottom: 10px;
+    color: #303954;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.notice-help-card p {
+    margin: 0;
+    color: #737d95;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .notice-hero {
+        padding: 27px 22px;
+        border-radius: 18px;
+    }
+
+    .notice-hero-decoration {
+        top: 38%;
+        right: -8%;
+        font-size: 115px;
+    }
+
+    .notice-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 22px 18px;
+    }
+
+    .notice-filter-panel {
+        padding: 20px 18px;
+    }
+
+    .notice-stat-card {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .notice-stat-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 19px;
+    }
+
+    .notice-stat-card h3 {
+        font-size: 21px;
+    }
+
+    .notice-filter-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .notice-card {
+        padding: 19px;
+    }
+}
+</style>
+
+<!-- Notice Search and Filters -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("noticeSearch");
+    const categoryFilter = document.getElementById("noticeCategory");
+    const dateFilter = document.getElementById("noticeDateFilter");
+    const resetButton = document.getElementById("resetNoticeFilters");
+
+    const items = Array.from(document.querySelectorAll(".notice-item"));
+    const noResults = document.getElementById("noNoticeResults");
+    const resultCount = document.getElementById("noticeResultCount");
+    const visibleNotices = document.getElementById("visibleNotices");
+    const datedNotices = document.getElementById("datedNotices");
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    function parseNoticeDate(value) {
+        if (!value) return null;
+
+        // Supports YYYY-MM-DD dates from a date input/database.
+        const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+        if (match) {
+            const date = new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            );
+
+            if (
+                date.getFullYear() === Number(match[1]) &&
+                date.getMonth() === Number(match[2]) - 1 &&
+                date.getDate() === Number(match[3])
+            ) {
+                return date;
+            }
+
+            return null;
+        }
+
+        // Fallback for other date formats supported by the browser.
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    datedNotices.textContent = items.filter(function (item) {
+        return Boolean(parseNoticeDate(item.dataset.date));
+    }).length;
+
+    function filterNotices() {
+        const query = searchInput.value.trim().toLowerCase();
+        const category = categoryFilter.value;
+        const dateMode = dateFilter.value;
+
+        let visibleCount = 0;
+
+        items.forEach(function (item) {
+            const title = item.dataset.title || "";
+            const details = item.dataset.details || "";
+            const text = title + " " + details;
+            const dateValue = item.dataset.date.trim();
+            const date = parseNoticeDate(dateValue);
+
+            const matchesSearch = text.includes(query);
+
+            const matchesCategory =
+                !category || item.dataset.category === category;
+
+            let matchesDate = true;
+
+            if (dateMode === "dated") {
+                matchesDate = Boolean(date);
+            } else if (dateMode === "undated") {
+                matchesDate = !date;
+            } else if (dateMode === "recent") {
+                matchesDate = Boolean(
+                    date && date >= thirtyDaysAgo && date <= today
+                );
+            }
+
+            const show = matchesSearch &&
+                         matchesCategory &&
+                         matchesDate;
+
+            item.style.display = show ? "" : "none";
+
+            if (show) {
+                visibleCount++;
+            }
+        });
+
+        noResults.style.display =
+            items.length > 0 && visibleCount === 0 ? "" : "none";
+
+        resultCount.textContent =
+            `Showing ${visibleCount} of ${items.length} notices`;
+
+        visibleNotices.textContent = visibleCount;
+    }
+
+    searchInput.addEventListener("input", filterNotices);
+    categoryFilter.addEventListener("change", filterNotices);
+    dateFilter.addEventListener("change", filterNotices);
+
+    resetButton.addEventListener("click", function () {
+        searchInput.value = "";
+        categoryFilter.value = "";
+        dateFilter.value = "";
+        filterNotices();
+    });
+
+    filterNotices();
+});
+</script>
+
+{% endblock %}
+/

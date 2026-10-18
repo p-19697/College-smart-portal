@@ -1,0 +1,605 @@
+
+{% extends "base.html" %}
+
+{% block title %}Students | College Smart Portal{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+.students-page {
+    --sp-navy: #102542;
+    --sp-blue: #176b87;
+    color: #26364a;
+}
+
+.students-page .sp-hero {
+    background: linear-gradient(125deg, #102542, #176b87, #32a6b8);
+    color: white;
+    border-radius: 23px;
+    padding: clamp(24px, 4vw, 42px);
+}
+
+.students-page .sp-hero h1 {
+    font-weight: 800;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+}
+
+.students-page .sp-hero p {
+    color: #e1f5ff;
+    line-height: 1.8;
+}
+
+.students-page .sp-panel {
+    background: white;
+    border: 1px solid #e7edf4;
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(16,37,66,.05);
+}
+
+.students-page .sp-stat {
+    padding: 20px;
+    height: 100%;
+    border: 1px solid #e7edf4;
+    border-radius: 16px;
+    background: white;
+}
+
+.students-page .sp-stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 13px;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.students-page .sp-stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--sp-navy);
+    overflow-wrap: anywhere;
+}
+
+.students-page .sp-muted {
+    color: #718096;
+    font-size: .9rem;
+}
+
+.students-page .sp-control {
+    min-height: 45px;
+    border: 1px solid #dbe4ee;
+    border-radius: 11px;
+}
+
+.students-page .sp-control:focus {
+    border-color: #176b87;
+    box-shadow: 0 0 0 .2rem rgba(23,107,135,.12);
+}
+
+.students-page .sp-btn {
+    border-radius: 11px;
+    font-weight: 600;
+    padding: 10px 15px;
+}
+
+.students-page .sp-table th {
+    background: #102542;
+    color: white;
+    white-space: nowrap;
+    padding: 15px 13px;
+    font-size: .86rem;
+}
+
+.students-page .sp-table td {
+    padding: 14px 13px;
+    vertical-align: middle;
+}
+
+.students-page .sp-table tbody tr:hover {
+    background: #f3f9ff;
+}
+
+.students-page .sp-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e5f1ff;
+    color: #176b87;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.students-page .sp-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 50px;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.students-page .sp-high {
+    color: #167447;
+    background: #e0f7e9;
+}
+
+.students-page .sp-medium {
+    color: #946200;
+    background: #fff3cd;
+}
+
+.students-page .sp-low {
+    color: #b42332;
+    background: #fde7e9;
+}
+
+.students-page .sp-empty {
+    padding: 38px 15px;
+    text-align: center;
+}
+
+.students-page .sp-empty i {
+    font-size: 2.8rem;
+    color: #94a3b8;
+}
+
+.students-page .sp-pagination .page-link {
+    color: #176b87;
+    border-radius: 8px;
+    margin: 0 3px;
+}
+
+.students-page .sp-pagination .page-item.active .page-link {
+    background: #102542;
+    border-color: #102542;
+    color: white;
+}
+
+.students-page .sp-note {
+    border-radius: 14px;
+    background: #edf7ff;
+    border: 1px solid #d8ebfa;
+    padding: 16px;
+}
+
+@media (max-width: 576px) {
+    .students-page .sp-hero {
+        border-radius: 17px;
+    }
+
+    .students-page .sp-stat {
+        padding: 15px;
+    }
+}
+</style>
+
+
+<div class="students-page">
+
+    <!-- HEADER -->
+    <section class="sp-hero mb-4 shadow-sm">
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+                <span class="badge rounded-pill text-bg-warning mb-3 p-2">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Academic Directory
+                </span>
+
+                <h1>
+                    <i class="bi bi-people-fill"></i>
+                    Student Records
+                </h1>
+
+                <p class="fs-6 mb-0">
+                    🎓 Explore student information, academic departments,
+                    attendance and marks through an organised student
+                    directory.
+                </p>
+            </div>
+
+            <div class="col-lg-4 text-lg-end">
+                {% if session.get('admin_logged_in') %}
+                <a href="{{ url_for('add_student') }}"
+                   class="btn btn-warning sp-btn">
+                    <i class="bi bi-person-plus-fill"></i>
+                    Add New Student
+                </a>
+                {% else %}
+                <div class="d-inline-block p-3 rounded-4"
+                     style="background:rgba(255,255,255,.12);">
+                    <i class="bi bi-journal-check fs-2"></i>
+                    <div class="fw-semibold">Academic Directory</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-6 col-lg-4">
+            <div class="sp-stat">
+                <div class="sp-stat-icon"
+                     style="background:#e5f1ff;color:#176b87;">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="sp-muted">Matching Records</div>
+
+                <div class="sp-stat-number">{{ total }}</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <div class="sp-stat">
+                <div class="sp-stat-icon"
+                     style="background:#e1f7e9;color:#168653;">
+                    <i class="bi bi-diagram-3-fill"></i>
+                </div>
+
+                <div class="sp-muted">Department Filter</div>
+
+                <div class="sp-stat-number"
+                     style="font-size:1.05rem;">
+                    {{ department if department else 'All Departments' }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="sp-stat">
+                <div class="sp-stat-icon"
+                     style="background:#fff0df;color:#bd6b16;">
+                    <i class="bi bi-search"></i>
+                </div>
+
+                <div class="sp-muted">Current Search</div>
+
+                <div class="sp-stat-number"
+                     style="font-size:1.05rem;">
+                    {{ search if search else 'No Search Applied' }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH AND FILTERS -->
+    <section class="sp-panel p-3 p-md-4 mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-funnel-fill fs-4 text-primary"></i>
+            <div>
+                <h2 class="h5 fw-bold mb-1">Search & Filter Students</h2>
+                <p class="sp-muted mb-0">
+                    Find records by name, student ID, email or department.
+                </p>
+            </div>
+        </div>
+
+        <form method="get" action="{{ url_for('students') }}">
+            <div class="row g-3">
+
+                <div class="col-lg-5">
+                    <label for="studentSearch"
+                           class="form-label fw-semibold">
+                        <i class="bi bi-search"></i> Search Student
+                    </label>
+
+                    <input type="search"
+                           id="studentSearch"
+                           name="q"
+                           class="form-control sp-control"
+                           placeholder="Name, ID or email..."
+                           value="{{ search }}">
+                </div>
+
+                <div class="col-lg-4">
+                    <label for="departmentSelect"
+                           class="form-label fw-semibold">
+                        <i class="bi bi-diagram-3"></i> Department
+                    </label>
+
+                    <select id="departmentSelect"
+                            name="department"
+                            class="form-select sp-control">
+
+                        <option value="">All Departments</option>
+
+                        {% for d in departments %}
+                        <option value="{{ d.department }}"
+                            {% if department == d.department %}selected{% endif %}>
+                            {{ d.department }}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <div class="col-lg-3 d-flex align-items-end gap-2">
+                    <button type="submit"
+                            class="btn btn-primary sp-btn flex-grow-1">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+
+                    <a href="{{ url_for('students') }}"
+                       class="btn btn-outline-secondary sp-btn"
+                       title="Clear filters"
+                       aria-label="Clear filters">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                </div>
+
+            </div>
+        </form>
+
+        {% if search or department %}
+        <div class="mt-3">
+            <span class="sp-badge sp-high">
+                <i class="bi bi-check-circle"></i>
+                Filters applied
+            </span>
+
+            {% if search %}
+            <span class="sp-badge bg-light text-dark border ms-1">
+                Search: {{ search }}
+            </span>
+            {% endif %}
+
+            {% if department %}
+            <span class="sp-badge bg-light text-dark border ms-1">
+                Department: {{ department }}
+            </span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </section>
+
+
+    <!-- STUDENT TABLE -->
+    <section class="sp-panel overflow-hidden mb-4">
+
+        <div class="p-3 p-md-4 border-bottom">
+            <div class="d-flex flex-wrap justify-content-between
+                        align-items-center gap-2">
+
+                <div>
+                    <h2 class="h5 fw-bold mb-1">
+                        <i class="bi bi-table text-primary"></i>
+                        Student Directory
+                    </h2>
+
+                    <p class="sp-muted mb-0">
+                        Student academic information and records.
+                    </p>
+                </div>
+
+                <span class="badge rounded-pill text-bg-light border p-2">
+                    <i class="bi bi-list-check"></i>
+                    {{ students|length }} on this page
+                </span>
+
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover sp-table mb-0">
+
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-hash"></i> Student ID</th>
+                        <th><i class="bi bi-person"></i> Student</th>
+                        <th><i class="bi bi-diagram-3"></i> Department</th>
+                        <th><i class="bi bi-calendar3"></i> Year</th>
+                        <th><i class="bi bi-calendar-check"></i> Attendance</th>
+                        <th><i class="bi bi-award"></i> Marks</th>
+                        <th><i class="bi bi-envelope"></i> Email</th>
+
+                        {% if session.get('admin_logged_in') %}
+                        <th><i class="bi bi-gear"></i> Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td>
+                            <span class="fw-bold text-primary">
+                                {{ s.student_code }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="sp-avatar">
+                                    {{ s.name[:1]|upper }}
+                                </div>
+
+                                <div class="fw-semibold">
+                                    {{ s.name }}
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="sp-badge bg-light text-dark border">
+                                {{ s.department }}
+                            </span>
+                        </td>
+
+                        <td>{{ s.year }}</td>
+
+                        <td>
+                            {% if s.attendance >= 75 %}
+                            <span class="sp-badge sp-high">
+                                <i class="bi bi-check-circle-fill"></i>
+                                {{ "%.1f"|format(s.attendance) }}%
+                            </span>
+                            {% elif s.attendance >= 60 %}
+                            <span class="sp-badge sp-medium">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                {{ "%.1f"|format(s.attendance) }}%
+                            </span>
+                            {% else %}
+                            <span class="sp-badge sp-low">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                {{ "%.1f"|format(s.attendance) }}%
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if s.marks >= 75 %}
+                            <span class="sp-badge sp-high">
+                                {{ "%.1f"|format(s.marks) }}%
+                            </span>
+                            {% elif s.marks >= 40 %}
+                            <span class="sp-badge sp-medium">
+                                {{ "%.1f"|format(s.marks) }}%
+                            </span>
+                            {% else %}
+                            <span class="sp-badge sp-low">
+                                {{ "%.1f"|format(s.marks) }}%
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if s.email %}
+                            <a href="mailto:{{ s.email }}"
+                               class="text-decoration-none">
+                                {{ s.email }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">Not provided</span>
+                            {% endif %}
+                        </td>
+
+                        {% if session.get('admin_logged_in') %}
+                        <td class="text-nowrap">
+
+                            <a class="btn btn-sm btn-outline-primary"
+                               href="{{ url_for('edit_student', student_id=s.id) }}"
+                               title="Edit student"
+                               aria-label="Edit student">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+
+                            <form method="post"
+                                  action="{{ url_for('delete_student', student_id=s.id) }}"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Are you sure you want to delete this student record?');">
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Delete student"
+                                        aria-label="Delete student">
+                                    <i class="bi bi-trash3"></i>
+                                    Delete
+                                </button>
+
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="{% if session.get('admin_logged_in') %}8{% else %}7{% endif %}">
+                            <div class="sp-empty">
+                                <i class="bi bi-person-exclamation"></i>
+                                <h3 class="h5 fw-bold mt-3">
+                                    No Student Records Found
+                                </h3>
+                                <p class="text-muted mb-3">
+                                    Try another search term or reset
+                                    the department filter.
+                                </p>
+
+                                <a href="{{ url_for('students') }}"
+                                   class="btn btn-outline-primary sp-btn">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    Clear Filters
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+
+        <!-- PAGINATION -->
+        <div class="p-3 p-md-4 border-top">
+            <nav aria-label="Student pages">
+                <ul class="pagination justify-content-center
+                           align-items-center flex-wrap sp-pagination mb-0">
+
+                    {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('students', q=search, department=department, page=page-1) }}">
+                            <i class="bi bi-chevron-left"></i>
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Page {{ page }} of {{ pages }}
+                        </span>
+                    </li>
+
+                    {% if page < pages %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ url_for('students', q=search, department=department, page=page+1) }}">
+                            Next
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+
+    </section>
+
+
+    <!-- INFORMATION NOTE -->
+    <div class="sp-note mb-3">
+        <div class="d-flex gap-3">
+            <i class="bi bi-info-circle-fill fs-4 text-primary"></i>
+
+            <div>
+                <h3 class="h6 fw-bold">Student Information</h3>
+                <p class="mb-0 small text-secondary">
+                    Student records contain academic and contact
+                    information. Personal information should only
+                    be accessed or modified by authorised users.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
